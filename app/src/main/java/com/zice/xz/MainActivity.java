@@ -2,27 +2,33 @@ package com.zice.xz;
 
 import android.database.Cursor;
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 
 import com.zice.xz.database.DataBaseHelper;
 import com.zice.xz.database.DataBaseTable;
 import com.zice.xz.database.TableColumn;
+import com.zice.xz.mvp.contract.IMainActivityView;
+import com.zice.xz.mvp.presenter.DBPresenter;
 import com.zice.xz.utils.DBUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends BaseActivity implements IMainActivityView {
 private static final String TAG = "MainActivity";
     private Spinner spClass;
     private DataBaseHelper dbh;
     private Spinner spType;
+    private EditText money;
+    private Button okInsert;
+    private DBPresenter dbPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,33 +37,19 @@ private static final String TAG = "MainActivity";
         initView();
         Log.i(TAG, "onCreate() savedInstanceState -> " + savedInstanceState);
         setListener();
+        dbPresenter = new DBPresenter(this);
     }
 
     private void initView() {
         spClass = (Spinner) findViewById(R.id.sp_class);
         spType = (Spinner) findViewById(R.id.sp_type);
+        money = (EditText) findViewById(R.id.money);
+        okInsert = (Button) findViewById(R.id.ok_insert);
     }
 
     public void click(View view) {
-        dbh = new DataBaseHelper(this, DataBaseTable.DB_NAME, null, 1);
-        Log.i(TAG, "onCreate() savedInstanceState -> ");
-        List<HashMap<String, String>> listems = new ArrayList<>();
-//
-//        dbh.queryTable("")
-//                .where("列名").is("值")
-//                .where("te").is("value")
-//                .exec();
-        Cursor consumeClass = dbh.queryTable(DataBaseTable.TABLE_CONSUME_CLASS).exec();
-        
-        while (consumeClass.moveToNext()){
-            HashMap<String, String> map = new HashMap<>();
-            String name = consumeClass.getString(consumeClass.getColumnIndex(TableColumn.COLUMN_NAME));
-            String id = consumeClass.getString(consumeClass.getColumnIndex(TableColumn.COLUMN_CLASS_ID));
-            map.put("class_id", id);
-            map.put("name",name);
-            listems.add(map);
-        }
-        spClass.setAdapter(new SimpleAdapter(this,listems,R.layout.test,new String[]{"name"},new int[]{R.id.item}));
+        dbh = new DataBaseHelper(this, DataBaseTable.DB_NAME, null, DataBaseHelper.DB_VERSION_INIT);
+        dbPresenter.initConsumeClass(dbh);
     }
     
     private void setListener(){
@@ -85,6 +77,12 @@ private static final String TAG = "MainActivity";
 
             }
         });
+        okInsert.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                
+            }
+        });
     }
 
     @Override
@@ -92,5 +90,10 @@ private static final String TAG = "MainActivity";
         super.onDestroy();
         
         DBUtils.syncDataBase();
+    }
+
+    @Override
+    public void onFetchConsumeClass(List<HashMap<String, String>> hashMapList) {
+        spClass.setAdapter(new SimpleAdapter(this,hashMapList,R.layout.test,new String[]{"name"},new int[]{R.id.item}));
     }
 }

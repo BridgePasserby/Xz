@@ -88,12 +88,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     }
 
-    public void insert(String tableName, ContentValues contentValues) {
-        db.insert(tableName, null, contentValues);
-    }
-
     /**
-     * select * from {able} where {column}={columnValue}
+     * select * from {table} where {column}={columnValue}
      *
      * @param table       数据库名
      * @param column      条件列名
@@ -101,58 +97,55 @@ public class DataBaseHelper extends SQLiteOpenHelper {
      * @return cursor
      */
     public Cursor query(String table, String column, String columnValue) {
-
-
         String selection = column + " = ?";
         String[] strings = new String[]{columnValue};
         return query(false, table, null, selection, strings, null, null, null, null);
-
     }
 
-    public Cursor query(boolean distinct, String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy, String limit) {
+    private Cursor query(boolean distinct, String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy, String limit) {
         return db.query(distinct, table, columns, selection, selectionArgs, groupBy, having, orderBy, limit);
     }
 
-    public Query queryTable(String tableName) {
-        return new Query(tableName);
+    public DBQuery queryTable(String tableName) {
+        return new DBQuery(tableName);
     }
 
-    public class Query extends Exec {
-        String tableName;
+    public class DBQuery extends QueryExec {
+//        String tableName;
 
-        Query(String tableName) {
+        DBQuery(String tableName) {
             super(tableName);
-            this.tableName = tableName;
+//            this.tableName = tableName;
         }
 
-        public Value where(String column) {
-            return new Value(this, column);
+        public QueryValue where(String column) {
+            return new QueryValue(this, column);
         }
     }
 
-    public class Value {
+    public class QueryValue {
         String column;
-        private Query query;
+        private DBQuery query;
 
-        Value(Query query, String column) {
+        QueryValue(DBQuery query, String column) {
             this.column = column;
             this.query = query;
         }
 
-        public Query is(String value) {
+        public DBQuery is(String value) {
             query.addParam(column, value);
             return query;
         }
     }
 
-    public class Exec {
+    public class QueryExec {
         private Map<String, String> paramMap;
         private String tableName;
 
         private StringBuilder selection = new StringBuilder();
         private String[] selectionArgs;
 
-        Exec(String tableName) {
+        QueryExec(String tableName) {
             paramMap = new HashMap<>();
             this.tableName = tableName;
         }
@@ -179,4 +172,61 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             }
         }
     }
+
+    public DBInsert insertTable(String tableName){
+        return new DBInsert(tableName);
+    }
+    
+    public class DBInsert extends InsertExec {
+        
+        DBInsert(String tableName){
+            super(tableName);
+        }
+        
+        public InsertValue where(String column){
+            return new InsertValue(this,column);
+        }
+    }
+    
+    public class InsertValue{
+        String column;
+        private DBInsert dbInsert;
+        InsertValue(DBInsert dbInsert,String column){
+            this.column = column;
+            this.dbInsert = dbInsert;
+        }
+        public DBInsert is(String value){
+            dbInsert.addParam(column, value);
+            return dbInsert;
+        }
+    }
+    
+    public class InsertExec{
+        String tableName;
+        HashMap<String,String> map ;
+        
+        InsertExec(String tableName){
+            map = new HashMap<>();
+            this.tableName = tableName;
+        }
+        
+        void addParam(String column,String value){
+            map.put(column, value);
+        }
+        
+        public boolean exec(){
+            if (map != null) {
+                Set<String> strings = map.keySet();
+                ContentValues contentValues = new ContentValues();
+                for (String s : strings) {
+                    contentValues.put(s, map.get(s));
+                }
+                return db.insert(tableName, null, contentValues) != -1;
+            } else {
+                return false;
+            }
+        }
+    }
+    
+
 }

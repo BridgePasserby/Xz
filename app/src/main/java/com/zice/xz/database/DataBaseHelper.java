@@ -24,6 +24,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private SQLiteDatabase db;
     private DataBaseTable dataBaseTable;
     private TableField tableField;
+    public static final int DB_VERSION_INIT = 1;
     private static final String TAG = "DataBaseHelper";
 
     public DataBaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
@@ -91,10 +92,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         db.insert(tableName, null, contentValues);
     }
 
-//    public Cursor query(String tableName) {
-//        return db.rawQuery("select * from " + tableName, null);
-//    }
-
     /**
      * select * from {able} where {column}={columnValue}
      *
@@ -116,17 +113,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return db.query(distinct, table, columns, selection, selectionArgs, groupBy, having, orderBy, limit);
     }
 
-//    public QueryTable requestNet(String url) {
-//        QueryTable requestMethod = new QueryTable();
-//        return requestMethod;
-//    }
-
-
-    //    public class QueryTable {
     public Query queryTable(String tableName) {
         return new Query(tableName);
     }
-//    }
 
     public class Query extends Exec {
         String tableName;
@@ -140,7 +129,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             return new Value(this, column);
         }
     }
-
 
     public class Value {
         String column;
@@ -157,7 +145,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         }
     }
 
-
     public class Exec {
         private Map<String, String> paramMap;
         private String tableName;
@@ -166,7 +153,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         private String[] selectionArgs;
 
         Exec(String tableName) {
-
             paramMap = new HashMap<>();
             this.tableName = tableName;
         }

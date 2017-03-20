@@ -16,10 +16,10 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" />
     <Button 
+        android:id="@+id/init_db"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="SQL"
-            android:onClick="click"/>
+            android:text="SQL"/>
     <Spinner
         android:id="@+id/sp_class"
         android:layout_width="match_parent"

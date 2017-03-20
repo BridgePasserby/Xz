@@ -46,7 +46,10 @@ public abstract class BasePresenter<T> {
         }
         return null;
     }
-    
+
+    /**
+     * 解除关联
+     */
     public void detach(){
         if (viewWF != null) {
             viewWF.clear();

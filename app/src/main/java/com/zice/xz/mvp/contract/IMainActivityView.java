@@ -14,5 +14,15 @@ import java.util.List;
  */
 
 public interface IMainActivityView extends BaseView  {
+    /**
+     * 更新消费分类
+     * @param hashMapList 消费分类list
+     */
     void onFetchConsumeClass(List<HashMap<String, String>> hashMapList);
+
+    /**
+     * 更新消费类型
+     * @param hashMapList 消费类型list
+     */
+    void onFetchConsumeType(List<HashMap<String, String>> hashMapList);
 }

@@ -29,26 +29,38 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
     public DBPresenter(IMainActivityView iMainActivityView) {
         super(iMainActivityView);
     }
-    
-    public void initConsumeClass(DataBaseHelper dbh){
+
+    public void initConsumeClass(DataBaseHelper dbh) {
         Log.i(TAG, "onCreate() savedInstanceState -> ");
-        List<HashMap<String, String>> listems = new ArrayList<>();
-
+        List<HashMap<String, String>> listItems = new ArrayList<>();
         Cursor consumeClass = dbh.queryTable(DataBaseTable.TABLE_CONSUME_CLASS).exec();
-
-        boolean test = dbh.insertTable(DataBaseTable.TABLE_CONSUME_BILL)
-                .where(TableColumn.COLUMN_CLASS_ID).is("test")
-                .exec();
-        while (consumeClass.moveToNext()){
+        while (consumeClass.moveToNext()) {
             HashMap<String, String> map = new HashMap<>();
             String name = consumeClass.getString(consumeClass.getColumnIndex(TableColumn.COLUMN_NAME));
             String id = consumeClass.getString(consumeClass.getColumnIndex(TableColumn.COLUMN_CLASS_ID));
             map.put("class_id", id);
-            map.put("name",name);
-            listems.add(map);
+            map.put("name", name);
+            listItems.add(map);
         }
         if (isAttach()) {
-            viewWF.get().onFetchConsumeClass(listems);
+            getView().onFetchConsumeClass(listItems);
+        }
+    }
+
+    public void upDateConsumeType(DataBaseHelper dbh, HashMap<String, String> selectedItem) {
+        String class_id = selectedItem.get("class_id");
+        Cursor query = dbh.query(DataBaseTable.TABLE_CONSUME_TYPE, TableColumn.COLUMN_CLASS_ID, class_id);
+        List<HashMap<String, String>> listItems = new ArrayList<>();
+        while (query.moveToNext()) {
+            HashMap<String, String> map = new HashMap<>();
+            String name = query.getString(query.getColumnIndex(TableColumn.COLUMN_NAME));
+            String typeId = query.getString(query.getColumnIndex(TableColumn.COLUMN_TYPE_ID));
+            map.put("type_id", typeId);
+            map.put("name", name);
+            listItems.add(map);
+        }
+        if (isAttach()) {
+            getView().onFetchConsumeType(listItems);
         }
     }
 }

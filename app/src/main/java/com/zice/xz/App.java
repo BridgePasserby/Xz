@@ -15,8 +15,13 @@ public class App extends Application {
 
     @Override
     public void onCreate() {
+<<<<<<< HEAD
         super.onCreate();0000000000
         context = this;...........
+=======
+        super.onCreate();
+        context = this;
+>>>>>>> a29ae0a1b8a8a0f943ce2ee65369f7d44bf66850
         Log.i(TAG, "onCreate() TAG -> " + TAG);。。。。。......
 
     }

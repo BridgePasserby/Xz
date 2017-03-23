@@ -18,7 +18,7 @@ public class DataBaseTable {
     /**
      * 消费分类表
      */
-    public static final String TABLE_CONSUME_CLASS = "CONSUME_CLASS";// 如：衣食住行
+    public static final String TABLE_CONSUME_CATEGORY = "CONSUME_CATEGORY";// 如：衣食住行
     /**
      * 消费类型表
      */
@@ -30,14 +30,14 @@ public class DataBaseTable {
 
     private static final String CREATE_SQL = "CREATE TABLE IF NOT EXISTS ";
     
-    public HashMap<Integer,String[]> consumeClassMap;
+    public HashMap<Integer,String[]> consumeCategoryMap;
     
     public String getCreateSQL(String tableName) {
         String[] values = null;
         switch (tableName) {
-            case TABLE_CONSUME_CLASS:
+            case TABLE_CONSUME_CATEGORY:
                 values = new String[]{TableColumn.COLUMN_ID,
-                        TableColumn.COLUMN_CLASS_ID,
+                        TableColumn.COLUMN_CATEGORY_ID,
                         TableColumn.COLUMN_NAME,
                         TableColumn.COLUMN_DESC};
                 break;
@@ -45,7 +45,7 @@ public class DataBaseTable {
                 values = new String[]{TableColumn.COLUMN_ID,
                         TableColumn.COLUMN_TYPE_ID,
                         TableColumn.COLUMN_NAME,
-                        TableColumn.COLUMN_CLASS_ID,
+                        TableColumn.COLUMN_CATEGORY_ID,
                         TableColumn.COLUMN_DESC};
                 break;
             case TABLE_CONSUME_BILL:
@@ -56,7 +56,7 @@ public class DataBaseTable {
                         TableColumn.COLUMN_MONEY,
                         TableColumn.COLUMN_INSERT_TIME,
                         TableColumn.COLUMN_TYPE_ID,
-                        TableColumn.COLUMN_CLASS_ID,
+                        TableColumn.COLUMN_CATEGORY_ID,
                         TableColumn.COLUMN_DESC};
                 break;
         }
@@ -83,17 +83,17 @@ public class DataBaseTable {
     }
 
 
-    public final String SQL_CREATE_TABLE_CONSUME_CLASS = "CREATE TABLE IF NOT EXISTS " + TABLE_CONSUME_CLASS + " (" +
+    public final String SQL_CREATE_TABLE_CONSUME_CATEGORY = "CREATE TABLE IF NOT EXISTS " + TABLE_CONSUME_CATEGORY + " (" +
             "    id       INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE," +
             "    name     TEXT," +
-            "    class_id INTEGER" +
+            "    category_id INTEGER" +
             "    desc        TEXT" +
             ");";
     public final String SQL_CREATE_TABLE_CONSUME_TYPE = "CREATE TABLE IF NOT EXISTS " + TABLE_CONSUME_TYPE + " (" +
             "    id       INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE," +
             "    name     TEXT," +
             "    type_id  INTEGER," +
-            "    class_id INTEGER" +
+            "    category_id INTEGER" +
             "    desc        TEXT" +
             ");";
     public final String SQL_CREATE_TABLE_CONSUME_BILL = "CREATE TABLE IF NOT EXISTS " + TABLE_CONSUME_BILL + " (" +

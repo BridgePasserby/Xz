@@ -3,7 +3,6 @@ package com.zice.xz.mvp.presenter;
 import android.database.Cursor;
 import android.util.Log;
 
-import com.zice.xz.App;
 import com.zice.xz.database.DataBaseHelper;
 import com.zice.xz.database.DataBaseTable;
 import com.zice.xz.database.TableColumn;
@@ -30,26 +29,26 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
         super(iMainActivityView);
     }
 
-    public void initConsumeClass(DataBaseHelper dbh) {
+    public void initConsumeCategory(DataBaseHelper dbh) {
         Log.i(TAG, "onCreate() savedInstanceState -> ");
         List<HashMap<String, String>> listItems = new ArrayList<>();
-        Cursor consumeClass = dbh.queryTable(DataBaseTable.TABLE_CONSUME_CLASS).exec();
-        while (consumeClass.moveToNext()) {
+        Cursor consumeCategory = dbh.queryTable(DataBaseTable.TABLE_CONSUME_CATEGORY).exec();
+        while (consumeCategory.moveToNext()) {
             HashMap<String, String> map = new HashMap<>();
-            String name = consumeClass.getString(consumeClass.getColumnIndex(TableColumn.COLUMN_NAME));
-            String id = consumeClass.getString(consumeClass.getColumnIndex(TableColumn.COLUMN_CLASS_ID));
-            map.put("class_id", id);
+            String name = consumeCategory.getString(consumeCategory.getColumnIndex(TableColumn.COLUMN_NAME));
+            String id = consumeCategory.getString(consumeCategory.getColumnIndex(TableColumn.COLUMN_CATEGORY_ID));
+            map.put("category_id", id);
             map.put("name", name);
             listItems.add(map);
         }
         if (isAttach()) {
-            getView().onFetchConsumeClass(listItems);
+            getView().onFetchConsumeCategory(listItems);
         }
     }
 
     public void upDateConsumeType(DataBaseHelper dbh, HashMap<String, String> selectedItem) {
-        String class_id = selectedItem.get("class_id");
-        Cursor query = dbh.query(DataBaseTable.TABLE_CONSUME_TYPE, TableColumn.COLUMN_CLASS_ID, class_id);
+        String category_id = selectedItem.get("category_id");
+        Cursor query = dbh.query(DataBaseTable.TABLE_CONSUME_TYPE, TableColumn.COLUMN_CATEGORY_ID, category_id);
         List<HashMap<String, String>> listItems = new ArrayList<>();
         while (query.moveToNext()) {
             HashMap<String, String> map = new HashMap<>();

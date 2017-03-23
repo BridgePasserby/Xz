@@ -20,7 +20,7 @@ import java.util.List;
 
 public class MainActivity extends BaseActivity implements IMainActivityView {
 private static final String TAG = "MainActivity";
-    private Spinner spClass;
+    private Spinner spCategory;
     private DataBaseHelper dbh;
     private Spinner spType;
     private EditText money;
@@ -40,7 +40,7 @@ private static final String TAG = "MainActivity";
     }
 
     private void initView() {
-        spClass = (Spinner) findViewById(R.id.sp_class);
+        spCategory = (Spinner) findViewById(R.id.sp_category);
         spType = (Spinner) findViewById(R.id.sp_type);
         money = (EditText) findViewById(R.id.money);
         okInsert = (Button) findViewById(R.id.ok_insert);
@@ -51,13 +51,13 @@ private static final String TAG = "MainActivity";
         btnInitDb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbPresenter.initConsumeClass(dbh);
+                dbPresenter.initConsumeCategory(dbh);
             }
         });
-        spClass.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+        spCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                HashMap<String, String> selectedItem = (HashMap<String, String>) spClass.getSelectedItem();
+                HashMap<String, String> selectedItem = (HashMap<String, String>) spCategory.getSelectedItem();
                 dbPresenter.upDateConsumeType(dbh,selectedItem);
             }
 
@@ -69,7 +69,9 @@ private static final String TAG = "MainActivity";
         okInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                Object categotyItem = spCategory.getSelectedItem();
+                Object typeItem = spType.getSelectedItem();
+//                dbPresenter.insertConsume(dbh,selectedItem);
             }
         });
     }
@@ -84,8 +86,8 @@ private static final String TAG = "MainActivity";
     }
 
     @Override
-    public void onFetchConsumeClass(List<HashMap<String, String>> hashMapList) {
-        spClass.setAdapter(new SimpleAdapter(this, hashMapList, R.layout.test, new String[]{"name"}, new int[]{R.id.item}));
+    public void onFetchConsumeCategory(List<HashMap<String, String>> hashMapList) {
+        spCategory.setAdapter(new SimpleAdapter(this, hashMapList, R.layout.test, new String[]{"name"}, new int[]{R.id.item}));
     }
 
     @Override

@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:text="SQL"/>
     <Spinner
-        android:id="@+id/sp_class"
+        android:id="@+id/sp_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
     <Spinner
@@ -35,5 +35,6 @@
     <Button
         android:id="@+id/ok_insert"
         android:layout_width="match_parent"
-        android:layout_height="50dp" />
+        android:layout_height="50dp"
+        android:text="小记"/>
 </LinearLayout>

@@ -45,10 +45,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         Log.i(TAG, "onCreate() db -> " + db);
-        db.execSQL(dataBaseTable.getCreateSQL(DataBaseTable.TABLE_CONSUME_CLASS));
+        db.execSQL(dataBaseTable.getCreateSQL(DataBaseTable.TABLE_CONSUME_CATEGORY));
         db.execSQL(dataBaseTable.getCreateSQL(DataBaseTable.TABLE_CONSUME_TYPE));
         db.execSQL(dataBaseTable.getCreateSQL(DataBaseTable.TABLE_CONSUME_BILL));
-        initTableConsumeClass(db);
+        initTableConsumeCategory(db);
         initConsumeType(db);
     }
 
@@ -64,22 +64,22 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         for (String id : arrayList) {
             values.put(TableColumn.COLUMN_TYPE_ID, id);
             values.put(TableColumn.COLUMN_NAME, consumeTypeMap.get(id));
-            values.put(TableColumn.COLUMN_CLASS_ID, id.substring(0, id.length() - 2));
+            values.put(TableColumn.COLUMN_CATEGORY_ID, id.substring(0, id.length() - 2));
             db.insert(DataBaseTable.TABLE_CONSUME_TYPE, null, values);
         }
     }
 
-    private void initTableConsumeClass(SQLiteDatabase db) {
-        HashMap<String, String> consumeClassMap = tableField.getConsumeClassMap();
-        Set<String> keySet = consumeClassMap.keySet();
+    private void initTableConsumeCategory(SQLiteDatabase db) {
+        HashMap<String, String> consumeCategoryMap = tableField.getConsumeCategoryMap();
+        Set<String> keySet = consumeCategoryMap.keySet();
         ContentValues values = new ContentValues();
         ArrayList<String> arrayList = new ArrayList<>(keySet);
         Collections.sort(arrayList);
         for (String id : arrayList) {
             Log.i(TAG, "zkai----onCreate: id ----> " + id);
-            values.put(TableColumn.COLUMN_CLASS_ID, id);
-            values.put(TableColumn.COLUMN_NAME, consumeClassMap.get(id));
-            db.insert(DataBaseTable.TABLE_CONSUME_CLASS, null, values);
+            values.put(TableColumn.COLUMN_CATEGORY_ID, id);
+            values.put(TableColumn.COLUMN_NAME, consumeCategoryMap.get(id));
+            db.insert(DataBaseTable.TABLE_CONSUME_CATEGORY, null, values);
         }
     }
 

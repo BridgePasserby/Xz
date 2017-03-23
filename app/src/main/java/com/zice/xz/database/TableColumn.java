@@ -17,7 +17,7 @@ public class TableColumn {
     /**
      * 分类id，如：衣食住行
      */
-    public static final String COLUMN_CLASS_ID = "class_id";
+    public static final String COLUMN_CATEGORY_ID = "category_id";
     /**
      * 备注
      */

@@ -25,4 +25,14 @@ public interface IMainActivityView extends BaseView  {
      * @param hashMapList 消费类型list
      */
     void onFetchConsumeType(List<HashMap<String, String>> hashMapList);
+
+    /**
+     * 数据库添加数据成功
+     */
+    void onFetchInsertSuccess();
+
+    /**
+     * 数据库添加数据失败
+     */
+    void onFetchInsertFailed();
 }

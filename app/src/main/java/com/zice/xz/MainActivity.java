@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.zice.xz.database.DataBaseHelper;
 import com.zice.xz.database.DataBaseTable;
@@ -19,11 +20,11 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends BaseActivity implements IMainActivityView {
-private static final String TAG = "MainActivity";
+    private static final String TAG = "MainActivity";
     private Spinner spCategory;
     private DataBaseHelper dbh;
     private Spinner spType;
-    private EditText money;
+    private EditText etMoney;
     private Button okInsert;
     private DBPresenter dbPresenter;
     private Button btnInitDb;
@@ -42,12 +43,12 @@ private static final String TAG = "MainActivity";
     private void initView() {
         spCategory = (Spinner) findViewById(R.id.sp_category);
         spType = (Spinner) findViewById(R.id.sp_type);
-        money = (EditText) findViewById(R.id.money);
+        etMoney = (EditText) findViewById(R.id.et_money);
         okInsert = (Button) findViewById(R.id.ok_insert);
         btnInitDb = (Button) findViewById(R.id.init_db);
     }
 
-    private void setListener(){
+    private void setListener() {
         btnInitDb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -58,7 +59,7 @@ private static final String TAG = "MainActivity";
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 HashMap<String, String> selectedItem = (HashMap<String, String>) spCategory.getSelectedItem();
-                dbPresenter.upDateConsumeType(dbh,selectedItem);
+                dbPresenter.initConsumeType(dbh, selectedItem);
             }
 
             @Override
@@ -69,9 +70,9 @@ private static final String TAG = "MainActivity";
         okInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Object categotyItem = spCategory.getSelectedItem();
-                Object typeItem = spType.getSelectedItem();
-                dbPresenter.insertConsume(dbh,selectedItem);
+                HashMap<String, String> categotyItem = (HashMap<String, String>) spCategory.getSelectedItem();
+                HashMap<String, String> typeItem = (HashMap<String, String>) spType.getSelectedItem();
+                dbPresenter.insertConsume(dbh, categotyItem, typeItem, String.valueOf(etMoney.getText()));
             }
         });
     }
@@ -93,5 +94,15 @@ private static final String TAG = "MainActivity";
     @Override
     public void onFetchConsumeType(List<HashMap<String, String>> hashMapList) {
         spType.setAdapter(new SimpleAdapter(MainActivity.this, hashMapList, R.layout.test, new String[]{"name"}, new int[]{R.id.item}));
+    }
+
+    @Override
+    public void onFetchInsertSuccess() {
+        Toast.makeText(this, "添加成功", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onFetchInsertFailed() {
+        Toast.makeText(this, "失败", Toast.LENGTH_SHORT).show();
     }
 }

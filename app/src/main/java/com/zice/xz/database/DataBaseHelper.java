@@ -23,14 +23,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     private SQLiteDatabase db;
     private DataBaseTable dataBaseTable;
-    private DefaultTableContent tableField;
+    private DefaultTableContent tableContent;
     public static final int DB_VERSION_INIT = 1;
     private static final String TAG = "DataBaseHelper";
 
     public DataBaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
         dataBaseTable = new DataBaseTable();
-        tableField = new DefaultTableContent();
+        tableContent = new DefaultTableContent();
         Log.i(TAG, "DataBaseHelper() context -> " + context);
         try {
             db = getWritableDatabase();
@@ -56,7 +56,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         Set<String> keySet;
         ArrayList<String> arrayList;
         ContentValues values;
-        HashMap<String, String> consumeTypeMap = tableField.getConsumeTypeMap();
+        HashMap<String, String> consumeTypeMap = tableContent.getConsumeTypeMap();
         keySet = consumeTypeMap.keySet();
         arrayList = new ArrayList<>(keySet);
         values = new ContentValues();
@@ -70,7 +70,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     }
 
     private void initTableConsumeCategory(SQLiteDatabase db) {
-        HashMap<String, String> consumeCategoryMap = tableField.getConsumeCategoryMap();
+        HashMap<String, String> consumeCategoryMap = tableContent.getConsumeCategoryMap();
         Set<String> keySet = consumeCategoryMap.keySet();
         ContentValues values = new ContentValues();
         ArrayList<String> arrayList = new ArrayList<>(keySet);

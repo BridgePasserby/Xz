@@ -75,7 +75,7 @@ public class DBUtils {
         if (!DBUtils.hasSDCard()) {
             return;
         }
-        String sdDataBasePath = DBUtils.getSDPath() + File.separator + "wz" + File.separator + DataBaseTable.DB_NAME;
+        String sdDataBasePath = DBUtils.getSDPath() + File.separator + "xz" + File.separator + DataBaseTable.DB_NAME;
         Log.i(TAG, "syncDataBase() sdDataBasePath -> " + sdDataBasePath);
         String dataBasePath = DBUtils.getDefaultDBPath(DataBaseTable.DB_NAME);
         Log.i(TAG, "syncDataBase() dataBasePath -> " + dataBasePath);
@@ -132,8 +132,8 @@ public class DBUtils {
     }
 
     /**
-     * @param path       原文件路径 如：c:/wz.db
-     * @param targetPath 目标路径 如：f:/wz.db
+     * @param path       原文件路径 如：c:/xz.db
+     * @param targetPath 目标路径 如：f:/xz.db
      * @return
      */
     private static boolean copyFile(String path, String targetPath) {

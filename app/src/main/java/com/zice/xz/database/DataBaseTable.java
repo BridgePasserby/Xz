@@ -14,7 +14,7 @@ public class DataBaseTable {
     /**
      * 数据库名
      */
-    public static final String DB_NAME = "wz.db";
+    public static final String DB_NAME = "xz.db";
     /**
      * 消费分类表
      */

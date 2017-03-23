@@ -17,7 +17,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         context = this;
-        Log.i(TAG, "onCreate() TAG -> " + TAG);
+        Log.i(TAG, "onCreate() TAG -> " + TAG);。。。。。
 
     }
 

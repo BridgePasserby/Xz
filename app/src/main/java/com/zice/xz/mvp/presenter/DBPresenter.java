@@ -5,7 +5,7 @@ import android.util.Log;
 
 import com.zice.xz.database.DataBaseHelper;
 import com.zice.xz.database.DataBaseTable;
-import com.zice.xz.database.TableColumn;
+import com.zice.xz.database.ColumnName;
 import com.zice.xz.mvp.contract.IMainActivityView;
 
 import java.util.ArrayList;
@@ -35,8 +35,8 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
         Cursor consumeCategory = dbh.queryTable(DataBaseTable.TABLE_CONSUME_CATEGORY).exec();
         while (consumeCategory.moveToNext()) {
             HashMap<String, String> map = new HashMap<>();
-            String name = consumeCategory.getString(consumeCategory.getColumnIndex(TableColumn.COLUMN_NAME));
-            String id = consumeCategory.getString(consumeCategory.getColumnIndex(TableColumn.COLUMN_CATEGORY_ID));
+            String name = consumeCategory.getString(consumeCategory.getColumnIndex(ColumnName.COLUMN_NAME));
+            String id = consumeCategory.getString(consumeCategory.getColumnIndex(ColumnName.COLUMN_CATEGORY_ID));
             map.put("category_id", id);
             map.put("name", name);
             listItems.add(map);
@@ -48,12 +48,12 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
 
     public void upDateConsumeType(DataBaseHelper dbh, HashMap<String, String> selectedItem) {
         String category_id = selectedItem.get("category_id");
-        Cursor query = dbh.query(DataBaseTable.TABLE_CONSUME_TYPE, TableColumn.COLUMN_CATEGORY_ID, category_id);
+        Cursor query = dbh.query(DataBaseTable.TABLE_CONSUME_TYPE, ColumnName.COLUMN_CATEGORY_ID, category_id);
         List<HashMap<String, String>> listItems = new ArrayList<>();
         while (query.moveToNext()) {
             HashMap<String, String> map = new HashMap<>();
-            String name = query.getString(query.getColumnIndex(TableColumn.COLUMN_NAME));
-            String typeId = query.getString(query.getColumnIndex(TableColumn.COLUMN_TYPE_ID));
+            String name = query.getString(query.getColumnIndex(ColumnName.COLUMN_NAME));
+            String typeId = query.getString(query.getColumnIndex(ColumnName.COLUMN_TYPE_ID));
             map.put("type_id", typeId);
             map.put("name", name);
             listItems.add(map);

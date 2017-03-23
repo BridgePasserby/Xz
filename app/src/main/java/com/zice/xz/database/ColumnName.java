@@ -5,7 +5,7 @@ package com.zice.xz.database;
  * Date 2016/11/4 18:29
  * Email Bridge_passerby@outlook.com
  */
-public class TableColumn {
+public class ColumnName {
     /**
      * 索引
      */

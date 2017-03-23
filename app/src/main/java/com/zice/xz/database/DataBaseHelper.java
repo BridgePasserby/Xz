@@ -23,14 +23,14 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     private SQLiteDatabase db;
     private DataBaseTable dataBaseTable;
-    private TableField tableField;
+    private DefaultTableContent tableField;
     public static final int DB_VERSION_INIT = 1;
     private static final String TAG = "DataBaseHelper";
 
     public DataBaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {
         super(context, name, factory, version);
         dataBaseTable = new DataBaseTable();
-        tableField = new TableField();
+        tableField = new DefaultTableContent();
         Log.i(TAG, "DataBaseHelper() context -> " + context);
         try {
             db = getWritableDatabase();
@@ -62,9 +62,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         values = new ContentValues();
         Collections.sort(arrayList);
         for (String id : arrayList) {
-            values.put(TableColumn.COLUMN_TYPE_ID, id);
-            values.put(TableColumn.COLUMN_NAME, consumeTypeMap.get(id));
-            values.put(TableColumn.COLUMN_CATEGORY_ID, id.substring(0, id.length() - 2));
+            values.put(ColumnName.COLUMN_TYPE_ID, id);
+            values.put(ColumnName.COLUMN_NAME, consumeTypeMap.get(id));
+            values.put(ColumnName.COLUMN_CATEGORY_ID, id.substring(0, id.length() - 2));
             db.insert(DataBaseTable.TABLE_CONSUME_TYPE, null, values);
         }
     }
@@ -77,8 +77,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         Collections.sort(arrayList);
         for (String id : arrayList) {
             Log.i(TAG, "zkai----onCreate: id ----> " + id);
-            values.put(TableColumn.COLUMN_CATEGORY_ID, id);
-            values.put(TableColumn.COLUMN_NAME, consumeCategoryMap.get(id));
+            values.put(ColumnName.COLUMN_CATEGORY_ID, id);
+            values.put(ColumnName.COLUMN_NAME, consumeCategoryMap.get(id));
             db.insert(DataBaseTable.TABLE_CONSUME_CATEGORY, null, values);
         }
     }

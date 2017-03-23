@@ -7,7 +7,7 @@ import java.util.HashMap;
  * Date 2016/11/4 20:57
  * Email Bridge_passerby@outlook.com
  */
-public class TableField {
+public class DefaultTableContent {
     private HashMap<String, String> consumeCategoryMap;
     private HashMap<String, String> consumeTypeMap;
     /* 消费分类表 字段 */
@@ -86,7 +86,7 @@ public class TableField {
     public static final String CONSUME_TYPE_OTHER = CONSUME_CATEGORY_OTHER + "99";
 
 
-    public TableField() {
+    public DefaultTableContent() {
         init();
     }
 

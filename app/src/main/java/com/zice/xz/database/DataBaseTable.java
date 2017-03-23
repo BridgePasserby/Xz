@@ -36,28 +36,28 @@ public class DataBaseTable {
         String[] values = null;
         switch (tableName) {
             case TABLE_CONSUME_CATEGORY:
-                values = new String[]{TableColumn.COLUMN_ID,
-                        TableColumn.COLUMN_CATEGORY_ID,
-                        TableColumn.COLUMN_NAME,
-                        TableColumn.COLUMN_DESC};
+                values = new String[]{ColumnName.COLUMN_ID,
+                        ColumnName.COLUMN_CATEGORY_ID,
+                        ColumnName.COLUMN_NAME,
+                        ColumnName.COLUMN_DESC};
                 break;
             case TABLE_CONSUME_TYPE:
-                values = new String[]{TableColumn.COLUMN_ID,
-                        TableColumn.COLUMN_TYPE_ID,
-                        TableColumn.COLUMN_NAME,
-                        TableColumn.COLUMN_CATEGORY_ID,
-                        TableColumn.COLUMN_DESC};
+                values = new String[]{ColumnName.COLUMN_ID,
+                        ColumnName.COLUMN_TYPE_ID,
+                        ColumnName.COLUMN_NAME,
+                        ColumnName.COLUMN_CATEGORY_ID,
+                        ColumnName.COLUMN_DESC};
                 break;
             case TABLE_CONSUME_BILL:
-                values = new String[]{TableColumn.COLUMN_ID,
-                        TableColumn.COLUMN_CONSUME_YEAR,
-                        TableColumn.COLUMN_CONSUME_MONTH,
-                        TableColumn.COLUMN_CONSUME_DAY,
-                        TableColumn.COLUMN_MONEY,
-                        TableColumn.COLUMN_INSERT_TIME,
-                        TableColumn.COLUMN_TYPE_ID,
-                        TableColumn.COLUMN_CATEGORY_ID,
-                        TableColumn.COLUMN_DESC};
+                values = new String[]{ColumnName.COLUMN_ID,
+                        ColumnName.COLUMN_CONSUME_YEAR,
+                        ColumnName.COLUMN_CONSUME_MONTH,
+                        ColumnName.COLUMN_CONSUME_DAY,
+                        ColumnName.COLUMN_MONEY,
+                        ColumnName.COLUMN_INSERT_TIME,
+                        ColumnName.COLUMN_TYPE_ID,
+                        ColumnName.COLUMN_CATEGORY_ID,
+                        ColumnName.COLUMN_DESC};
                 break;
         }
         if (values == null) {
@@ -68,9 +68,6 @@ public class DataBaseTable {
             if ("id".equals(value)) {
                 args.append(value).append(" INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE,");
             }
-//            else if (value.contains("id")) {
-//                args.append(value).append(" INTEGER,");
-//            } 
             else if (value.contains("money")) {
                 args.append(value).append(" NUMERIC(12,2),");
             } else {
@@ -81,30 +78,5 @@ public class DataBaseTable {
         Log.i(TAG, "getCreateSQL() sql -> " + sql);
         return sql;
     }
-
-
-    public final String SQL_CREATE_TABLE_CONSUME_CATEGORY = "CREATE TABLE IF NOT EXISTS " + TABLE_CONSUME_CATEGORY + " (" +
-            "    id       INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE," +
-            "    name     TEXT," +
-            "    category_id INTEGER" +
-            "    desc        TEXT" +
-            ");";
-    public final String SQL_CREATE_TABLE_CONSUME_TYPE = "CREATE TABLE IF NOT EXISTS " + TABLE_CONSUME_TYPE + " (" +
-            "    id       INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE," +
-            "    name     TEXT," +
-            "    type_id  INTEGER," +
-            "    category_id INTEGER" +
-            "    desc        TEXT" +
-            ");";
-    public final String SQL_CREATE_TABLE_CONSUME_BILL = "CREATE TABLE IF NOT EXISTS " + TABLE_CONSUME_BILL + " (" +
-            "    id            INTEGER PRIMARY KEY AUTOINCREMENT UNIQUE," +
-            "    consume_year  INTEGER," +
-            "    consume_month INTEGER," +
-            "    consume_day   INTEGER," +
-            "    consume_type  INTEGER," +
-            "    consume_money NUMERIC(12,2)," +
-            "    insert_time   TEXT," +
-            "    desc        TEXT" +
-            ");";
 
 }

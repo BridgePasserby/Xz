@@ -71,7 +71,7 @@ private static final String TAG = "MainActivity";
             public void onClick(View v) {
                 Object categotyItem = spCategory.getSelectedItem();
                 Object typeItem = spType.getSelectedItem();
-//                dbPresenter.insertConsume(dbh,selectedItem);
+                dbPresenter.insertConsume(dbh,selectedItem);
             }
         });
     }

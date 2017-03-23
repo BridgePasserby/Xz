@@ -50,9 +50,9 @@ public class DataBaseTable {
                 break;
             case TABLE_CONSUME_BILL:
                 values = new String[]{ColumnName.COLUMN_ID,
-                        ColumnName.COLUMN_CONSUME_YEAR,
-                        ColumnName.COLUMN_CONSUME_MONTH,
-                        ColumnName.COLUMN_CONSUME_DAY,
+                        ColumnName.COLUMN_YEAR,
+                        ColumnName.COLUMN_MONTH,
+                        ColumnName.COLUMN_DAY,
                         ColumnName.COLUMN_MONEY,
                         ColumnName.COLUMN_INSERT_TIME,
                         ColumnName.COLUMN_TYPE_ID,

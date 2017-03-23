@@ -21,6 +21,8 @@ import java.security.MessageDigest;
 
 public class DBUtils {
     private static final String TAG = "DBUtils";
+    private static final String DATA_DIRECTORY = "xz";
+
     /**
      * 获取数据库的默认路径，data/data/报名/database/xxx.db
      *
@@ -75,7 +77,7 @@ public class DBUtils {
         if (!DBUtils.hasSDCard()) {
             return;
         }
-        String sdDataBasePath = DBUtils.getSDPath() + File.separator + "xz" + File.separator + DataBaseTable.DB_NAME;
+        String sdDataBasePath = DBUtils.getSDPath() + File.separator + DATA_DIRECTORY + File.separator + DataBaseTable.DB_NAME;
         Log.i(TAG, "syncDataBase() sdDataBasePath -> " + sdDataBasePath);
         String dataBasePath = DBUtils.getDefaultDBPath(DataBaseTable.DB_NAME);
         Log.i(TAG, "syncDataBase() dataBasePath -> " + dataBasePath);

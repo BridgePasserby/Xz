@@ -23,32 +23,27 @@ public class ColumnName {
      */
     public static final String COLUMN_DESC = "desc";
     /**
-     * 消费类型id，如：早饭
+     * 类型id，如：早饭
      */
     public static final String COLUMN_TYPE_ID = "type_id";
     /**
-     * 消费年份
+     * 年
      */
-    public static final String COLUMN_CONSUME_YEAR = "consume_year";
+    public static final String COLUMN_YEAR = "year";
     /**
-     * 消费月份
+     * 月
      */
-    public static final String COLUMN_CONSUME_MONTH = "consume_month";
+    public static final String COLUMN_MONTH = "month";
     /**
-     * 消费日
+     * 日
      */
-    public static final String COLUMN_CONSUME_DAY = "consume_day";
-//    /**
-//     * 消费类型
-//     */
-//    public static final String COLUMN_CONSUME_TYPE = "consume_type";
+    public static final String COLUMN_DAY = "day";
     /**
-     * 消费金额
+     * 金额
      */
-    public static final String COLUMN_MONEY = "consume_money";
+    public static final String COLUMN_MONEY = "money";
     /**
-     * 插入时间
+     * 录入时间
      */
     public static final String COLUMN_INSERT_TIME = "insert_time";
-
 }

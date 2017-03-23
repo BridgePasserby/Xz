@@ -7,12 +7,10 @@ import com.zice.xz.database.DataBaseHelper;
 import com.zice.xz.database.DataBaseTable;
 import com.zice.xz.database.ColumnName;
 import com.zice.xz.mvp.contract.IMainActivityView;
+import com.zice.xz.utils.NumberUtils;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -41,8 +39,8 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
             HashMap<String, String> map = new HashMap<>();
             String name = consumeCategory.getString(consumeCategory.getColumnIndex(ColumnName.COLUMN_NAME));
             String id = consumeCategory.getString(consumeCategory.getColumnIndex(ColumnName.COLUMN_CATEGORY_ID));
-            map.put("category_id", id);
-            map.put("name", name);
+            map.put(ColumnName.COLUMN_CATEGORY_ID, id);
+            map.put(ColumnName.COLUMN_NAME, name);
             listItems.add(map);
         }
         if (isAttach()) {
@@ -58,8 +56,8 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
             HashMap<String, String> map = new HashMap<>();
             String name = query.getString(query.getColumnIndex(ColumnName.COLUMN_NAME));
             String typeId = query.getString(query.getColumnIndex(ColumnName.COLUMN_TYPE_ID));
-            map.put("type_id", typeId);
-            map.put("name", name);
+            map.put(ColumnName.COLUMN_TYPE_ID, typeId);
+            map.put(ColumnName.COLUMN_NAME, name);
             listItems.add(map);
         }
         if (isAttach()) {
@@ -68,6 +66,8 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
     }
 
     public void insertConsume(DataBaseHelper dbh, HashMap<String, String> categoryItem, HashMap<String, String> typeItem, String money) {
+        Double aDouble = Double.valueOf(money);
+        money = String.valueOf(NumberUtils.formatDouble(aDouble, 2, true));
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
         int month = calendar.get(Calendar.MONTH)+1;
@@ -77,9 +77,9 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
         boolean success = dbh.insertTable(DataBaseTable.TABLE_CONSUME_BILL)
                 .where(ColumnName.COLUMN_CATEGORY_ID).is(categoryId)
                 .where(ColumnName.COLUMN_TYPE_ID).is(typeId)
-                .where(ColumnName.COLUMN_CONSUME_YEAR).is(String.valueOf(year))
-                .where(ColumnName.COLUMN_CONSUME_MONTH).is(String.valueOf(month))
-                .where(ColumnName.COLUMN_CONSUME_DAY).is(String.valueOf(day))
+                .where(ColumnName.COLUMN_YEAR).is(String.valueOf(year))
+                .where(ColumnName.COLUMN_MONTH).is(String.valueOf(month))
+                .where(ColumnName.COLUMN_DAY).is(String.valueOf(day))
                 .where(ColumnName.COLUMN_MONEY).is(money)
                 .where(ColumnName.COLUMN_INSERT_TIME).is(String.valueOf(calendar.getTime().getTime()))
                 .where(ColumnName.COLUMN_DESC).is("")

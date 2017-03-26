@@ -11,19 +11,20 @@ import android.util.Log;
  */
 public class App extends Application {
     private static final String TAG = "App";
-    private static Context context;
+    private static App _appInst;
+
+    public App() {
+        super();
+        _appInst = this;
+    }
 
     @Override
     public void onCreate() {
         super.onCreate();
-        Log.i(TAG, "onCreate() TAG -> " + TAG);..............
-
+        Log.i(TAG, "onCreate() TAG -> " + TAG);
     }
 
     public static Context getAppContext() {
-        return context;
+        return _appInst.getApplicationContext();
     }
-    
-    
-    
 }

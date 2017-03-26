@@ -1,6 +1,7 @@
 package com.zice.xz;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -22,18 +23,17 @@ import java.util.List;
 public class MainActivity extends BaseActivity implements IMainActivityView {
     private static final String TAG = "MainActivity";
     private Spinner spCategory;
-    private DataBaseHelper dbh;
     private Spinner spType;
     private EditText etMoney;
-    private Button okInsert;
+    private Button btnInsert;
     private DBPresenter dbPresenter;
     private Button btnInitDb;
+    private Button btnSearch;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        dbh = new DataBaseHelper(this, DataBaseTable.DB_NAME, null, DataBaseHelper.DB_VERSION_INIT);
         dbPresenter = new DBPresenter(this);
         initView();
         Log.i(TAG, "onCreate() savedInstanceState -> " + savedInstanceState);
@@ -44,22 +44,23 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
         spCategory = (Spinner) findViewById(R.id.sp_category);
         spType = (Spinner) findViewById(R.id.sp_type);
         etMoney = (EditText) findViewById(R.id.et_money);
-        okInsert = (Button) findViewById(R.id.ok_insert);
+        btnInsert = (Button) findViewById(R.id.ok_insert);
         btnInitDb = (Button) findViewById(R.id.init_db);
+        btnSearch = (Button) findViewById(R.id.btn_search);
     }
 
     private void setListener() {
-        btnInitDb.setOnClickListener(new View.OnClickListener() {
+       btnInitDb.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbPresenter.initConsumeCategory(dbh);
+                dbPresenter.initConsumeCategory();
             }
         });
         spCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 HashMap<String, String> selectedItem = (HashMap<String, String>) spCategory.getSelectedItem();
-                dbPresenter.initConsumeType(dbh, selectedItem);
+                dbPresenter.initConsumeType( selectedItem);
             }
 
             @Override
@@ -67,12 +68,23 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
 
             }
         });
-        okInsert.setOnClickListener(new View.OnClickListener() {
+        btnInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HashMap<String, String> categotyItem = (HashMap<String, String>) spCategory.getSelectedItem();
+                HashMap<String, String> categoryItem = (HashMap<String, String>) spCategory.getSelectedItem();
                 HashMap<String, String> typeItem = (HashMap<String, String>) spType.getSelectedItem();
-                dbPresenter.insertConsume(dbh, categotyItem, typeItem, String.valueOf(etMoney.getText()));
+                String money = String.valueOf(etMoney.getText());
+                if (TextUtils.isEmpty(money)) {
+                    Toast.makeText(MainActivity.this, "金额不能为空", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                dbPresenter.insertConsume(categoryItem, typeItem, money);
+            }
+        });
+        btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dbPresenter.searchConsume();
             }
         });
     }

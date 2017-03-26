@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Xz</string>
+    <string name="main_record">小记</string>
+    <string name="main_search">查询</string>
 </resources>

@@ -1,8 +1,10 @@
 package com.zice.xz.mvp.presenter;
 
 import android.database.Cursor;
+import android.text.TextUtils;
 import android.util.Log;
 
+import com.zice.xz.App;
 import com.zice.xz.database.DataBaseHelper;
 import com.zice.xz.database.DataBaseTable;
 import com.zice.xz.database.ColumnName;
@@ -22,6 +24,9 @@ import java.util.List;
  */
 
 public class DBPresenter extends BasePresenter<IMainActivityView> {
+
+    private DataBaseHelper dbh;
+
     /**
      * 自动关联view和presenter
      *
@@ -29,9 +34,12 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
      */
     public DBPresenter(IMainActivityView iMainActivityView) {
         super(iMainActivityView);
+        if (dbh == null) {
+            dbh = new DataBaseHelper(App.getAppContext(), DataBaseTable.DB_NAME, null, DataBaseHelper.DB_VERSION_INIT);
+        }
     }
 
-    public void initConsumeCategory(DataBaseHelper dbh) {
+    public void initConsumeCategory() {
         Log.i(TAG, "onCreate() savedInstanceState -> ");
         List<HashMap<String, String>> listItems = new ArrayList<>();
         Cursor consumeCategory = dbh.queryTable(DataBaseTable.TABLE_CONSUME_CATEGORY).exec();
@@ -48,7 +56,7 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
         }
     }
 
-    public void initConsumeType(DataBaseHelper dbh, HashMap<String, String> selectedItem) {
+    public void initConsumeType( HashMap<String, String> selectedItem) {
         String categoryId = selectedItem.get(ColumnName.COLUMN_CATEGORY_ID);
         Cursor query = dbh.query(DataBaseTable.TABLE_CONSUME_TYPE, ColumnName.COLUMN_CATEGORY_ID, categoryId);
         List<HashMap<String, String>> listItems = new ArrayList<>();
@@ -65,7 +73,7 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
         }
     }
 
-    public void insertConsume(DataBaseHelper dbh, HashMap<String, String> categoryItem, HashMap<String, String> typeItem, String money) {
+    public void insertConsume( HashMap<String, String> categoryItem, HashMap<String, String> typeItem, String money) {
         Double aDouble = Double.valueOf(money);
         money = String.valueOf(NumberUtils.formatDouble(aDouble, 2, true));
         Calendar calendar = Calendar.getInstance();
@@ -91,5 +99,13 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
                 getView().onFetchInsertFailed();
             }
         }
+    }
+
+    public void searchConsume(String... condition) {
+        DataBaseHelper.DBQuery dbQuery = dbh.queryTable(DataBaseTable.TABLE_CONSUME_BILL);
+        for (String s : condition) {
+            
+        }
+        
     }
 }

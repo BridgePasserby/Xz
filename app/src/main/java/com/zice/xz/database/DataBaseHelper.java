@@ -160,11 +160,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                 Set<String> strings = paramMap.keySet();
                 List<String> argList = new ArrayList<>();
                 for (String s : strings) {
-                    selection.append(s).append(",");
+                    selection.append(s).append("=?").append(",");
                     argList.add(paramMap.get(s));
                 }
-                selectionArgs = (String[]) argList.toArray();
-                Log.i(TAG, "paramMap ------> " + paramMap);
+                selectionArgs = argList.toArray(new String[argList.size()]);
                 return db.query(false, tableName, null, String.valueOf(selection.substring(0, selection.length() - 1)), selectionArgs, null, null, null, null);
 
             } else {

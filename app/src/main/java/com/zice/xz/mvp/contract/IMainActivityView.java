@@ -35,4 +35,9 @@ public interface IMainActivityView extends BaseView  {
      * 数据库添加数据失败
      */
     void onFetchInsertFailed();
+
+    /**
+     * 更新消费表
+     */
+    void onFetchUpdateConsume(List<HashMap<String, String>> hashMapList);
 }

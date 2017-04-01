@@ -11,8 +11,10 @@ import com.zice.xz.database.ColumnName;
 import com.zice.xz.mvp.contract.IMainActivityView;
 import com.zice.xz.utils.NumberUtils;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -105,6 +107,53 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
         DataBaseHelper.DBQuery dbQuery = dbh.queryTable(DataBaseTable.TABLE_CONSUME_BILL);
         for (String s : condition) {
             
+            if (TextUtils.isEmpty(s)){
+                continue;    
+            }
+            String substring = s.substring(0, 3);
+            switch (substring) {
+                case "YER":
+                    dbQuery.where(ColumnName.COLUMN_YEAR).is(s.substring(3));
+                    break;
+                case "MOH":
+                    dbQuery.where(ColumnName.COLUMN_MONEY).is(s.substring(3));
+                    break;
+                case "DAY":
+                    dbQuery.where(ColumnName.COLUMN_DAY).is(s.substring(3));
+                    break;
+                case "MOY":
+                    dbQuery.where(ColumnName.COLUMN_MONEY).is(NumberUtils.formatDouble(s.substring(3),2,true));
+                    break;
+                case "TIE":
+                    dbQuery.where(ColumnName.COLUMN_INSERT_TIME).is(s.substring(3));
+                    break;
+                case "TID":
+                    dbQuery.where(ColumnName.COLUMN_TYPE_ID).is(s.substring(3));
+                    break;
+                case "CID":
+                    dbQuery.where(ColumnName.COLUMN_CATEGORY_ID).is(s.substring(3));
+                    break;
+                case "DES":
+                    dbQuery.where(ColumnName.COLUMN_DESC).is(s.substring(3));
+                    break;
+            }
+        }
+        Cursor cursor = dbQuery.exec();
+        List<HashMap<String, String>> listItems = new ArrayList<>();
+            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        while (cursor.moveToNext()) {
+            HashMap<String, String> map = new HashMap<>();
+            String insertTime = cursor.getString(cursor.getColumnIndex(ColumnName.COLUMN_INSERT_TIME));
+            String money = cursor.getString(cursor.getColumnIndex(ColumnName.COLUMN_MONEY));
+            String time = simpleDateFormat.format(new Date(Long.valueOf(insertTime)));
+            map.put("time", time);
+            map.put("money", money);
+            listItems.add(map);
+            Log.i(TAG, "kai ---- searchConsume() insertTime ----> " + insertTime);
+            Log.i(TAG, "kai ---- searchConsume() money ----> " + money);
+        }
+        if (isAttach()) {
+                getView().onFetchUpdateConsume(listItems);
         }
         
     }

@@ -37,6 +37,29 @@ public class NumberUtils {
         return bg.doubleValue();
     }
 
+    public static double formatDouble(int decimalDigits, boolean round, String num) {
+        Double number;
+        try {
+            number = Double.valueOf(num);
+        } catch (NumberFormatException e) {
+            number = 0D;
+            e.printStackTrace();
+        }
+        return formatDouble(number, decimalDigits, round);
+    }
+
+    public static String formatDouble(String num, int decimalDigits, boolean round) {
+        Double number;
+        try {
+            number = Double.valueOf(num);
+        } catch (NumberFormatException e) {
+            number = 0D;
+            e.printStackTrace();
+        }
+        double aDouble = formatDouble(number, decimalDigits, round);
+        return String.valueOf(aDouble);
+    }
+    
     public static String formatDouble3(double d) {
         NumberFormat nf = NumberFormat.getNumberInstance();
         // 保留两位小数

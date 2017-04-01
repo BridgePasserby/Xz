@@ -37,9 +37,22 @@
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="@string/main_record"/>
+    <EditText
+        android:id="@+id/et_search"
+        android:layout_width="match_parent"
+        android:layout_height="50dp" />
     <Button
         android:id="@+id/btn_search"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:text="@string/main_search"/>
+    <ListView
+        android:id="@+id/lv_consume"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:divider="@color/color_black"
+        android:dividerHeight="2dp"
+        android:headerDividersEnabled="true"
+        android:footerDividersEnabled="true">
+    </ListView>
 </LinearLayout>

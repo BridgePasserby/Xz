@@ -60,6 +60,7 @@ public class DefaultTableContent {
     public static final String CONSUME_TYPE_SAUNA = CONSUME_CATEGORY_ENTERTAINMENT + "06";
     public static final String CONSUME_TYPE_FITNESS = CONSUME_CATEGORY_ENTERTAINMENT + "07";
     public static final String CONSUME_TYPE_CONCERT = CONSUME_CATEGORY_ENTERTAINMENT + "08";
+    public static final String CONSUME_TYPE_GAME = CONSUME_CATEGORY_ENTERTAINMENT + "09";
 //    public static final String CONSUME_TYPE_OTHER_5 = CONSUME_CATEGORY_OTHER + "004";
 
     public static final String CONSUME_TYPE_COMPUTER = CONSUME_CATEGORY_ELECTRONIC_PRODUCT + "01";
@@ -141,6 +142,7 @@ public class DefaultTableContent {
         consumeTypeMap.put(CONSUME_TYPE_SAUNA, "桑拿");
         consumeTypeMap.put(CONSUME_TYPE_FITNESS, "健身");
         consumeTypeMap.put(CONSUME_TYPE_CONCERT, "音乐会");
+        consumeTypeMap.put(CONSUME_TYPE_GAME, "游戏");
 //        consumeTypeMap.put(CONSUME_TYPE_OTHER_5, "其他");
 
         consumeTypeMap.put(CONSUME_TYPE_COMPUTER, "电脑");

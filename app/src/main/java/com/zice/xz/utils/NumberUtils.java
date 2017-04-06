@@ -59,6 +59,15 @@ public class NumberUtils {
         double aDouble = formatDouble(number, decimalDigits, round);
         return String.valueOf(aDouble);
     }
+    public static int formatInt(double num) {
+        if (num > 0) {
+            return 1;
+        } else if (num < 0) {
+            return -1;
+        }else {
+            return 0;
+        }
+    }
     
     public static String formatDouble3(double d) {
         NumberFormat nf = NumberFormat.getNumberInstance();

@@ -88,7 +88,7 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbPresenter.searchConsume(etSearch.getText().toString());
+                dbPresenter.searchConsume(DBPresenter.PR_TIME,etSearch.getText().toString());
             }
         });
     }
@@ -124,6 +124,10 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
 
     @Override
     public void onFetchUpdateConsume(List<HashMap<String, String>> hashMapList) {
+        if (hashMapList == null || hashMapList.size() == 0) {
+            Toast.makeText(this, "无消费记录", Toast.LENGTH_SHORT).show();
+            return;
+        }
         lvConsume.setAdapter(new SimpleAdapter(this,hashMapList,R.layout.layout_consume,new String[]{"time","money"},new int[]{R.id.txt_time,R.id.txt_money}));
     }
 }

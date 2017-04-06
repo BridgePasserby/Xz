@@ -2,4 +2,7 @@
     <string name="app_name">Xz</string>
     <string name="main_record">小记</string>
     <string name="main_search">查询</string>
+    <string name="search_condition">搜索条件</string>
+    <string name="sort_condition">排序条件</string>
+    <string name="hint_money">请输入消费金额</string>
 </resources>

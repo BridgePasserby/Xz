@@ -11,6 +11,7 @@ import java.util.HashMap;
  */
 public class DataBaseTable {
     private static final String TAG = "DataBaseTable";
+    public static final int DATABASE_VERSION_INIT = 1;
     /**
      * 数据库名
      */

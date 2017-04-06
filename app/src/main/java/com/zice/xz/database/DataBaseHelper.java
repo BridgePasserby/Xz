@@ -24,7 +24,6 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     private SQLiteDatabase db;
     private DataBaseTable dataBaseTable;
     private DefaultTableContent tableContent;
-    public static final int DB_VERSION_INIT = 1;
     private static final String TAG = "DataBaseHelper";
 
     public DataBaseHelper(Context context, String name, SQLiteDatabase.CursorFactory factory, int version) {

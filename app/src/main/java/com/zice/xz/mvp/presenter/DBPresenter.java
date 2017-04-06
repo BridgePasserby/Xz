@@ -11,10 +11,10 @@ import com.zice.xz.database.ColumnName;
 import com.zice.xz.mvp.contract.IMainActivityView;
 import com.zice.xz.utils.NumberUtils;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 
@@ -28,6 +28,14 @@ import java.util.List;
 public class DBPresenter extends BasePresenter<IMainActivityView> {
 
     private DataBaseHelper dbh;
+    public static final String PR_YEAR = "YER";
+    public static final String PR_MONTH = "MON";
+    public static final String PR_DAY = "DAY";
+    public static final String PR_MONEY = "MOY";
+    public static final String PR_TIME = "TIE";
+    public static final String PR_TYPE_ID = "TID";
+    public static final String PR_CATEGORY_ID = "CID";
+    public static final String PR_DESC = "DES";
 
     /**
      * 自动关联view和presenter
@@ -37,7 +45,7 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
     public DBPresenter(IMainActivityView iMainActivityView) {
         super(iMainActivityView);
         if (dbh == null) {
-            dbh = new DataBaseHelper(App.getAppContext(), DataBaseTable.DB_NAME, null, DataBaseHelper.DB_VERSION_INIT);
+            dbh = new DataBaseHelper(App.getAppContext(), DataBaseTable.DB_NAME, null, DataBaseTable.DATABASE_VERSION_INIT);
         }
     }
 
@@ -103,7 +111,7 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
         }
     }
 
-    public void searchConsume(String... condition) {
+    public void searchConsume(final String sortType, String... condition) {
         DataBaseHelper.DBQuery dbQuery = dbh.queryTable(DataBaseTable.TABLE_CONSUME_BILL);
         for (String s : condition) {
             
@@ -112,47 +120,66 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
             }
             String substring = s.substring(0, 3);
             switch (substring) {
-                case "YER":
+                case PR_YEAR:
                     dbQuery.where(ColumnName.COLUMN_YEAR).is(s.substring(3));
                     break;
-                case "MOH":
+                case PR_MONTH:
                     dbQuery.where(ColumnName.COLUMN_MONEY).is(s.substring(3));
                     break;
-                case "DAY":
+                case PR_DAY:
                     dbQuery.where(ColumnName.COLUMN_DAY).is(s.substring(3));
                     break;
-                case "MOY":
+                case PR_MONEY:
                     dbQuery.where(ColumnName.COLUMN_MONEY).is(NumberUtils.formatDouble(s.substring(3),2,true));
                     break;
-                case "TIE":
+                case PR_TIME:
                     dbQuery.where(ColumnName.COLUMN_INSERT_TIME).is(s.substring(3));
                     break;
-                case "TID":
+                case PR_TYPE_ID:
                     dbQuery.where(ColumnName.COLUMN_TYPE_ID).is(s.substring(3));
                     break;
-                case "CID":
+                case PR_CATEGORY_ID:
                     dbQuery.where(ColumnName.COLUMN_CATEGORY_ID).is(s.substring(3));
                     break;
-                case "DES":
+                case PR_DESC:
                     dbQuery.where(ColumnName.COLUMN_DESC).is(s.substring(3));
                     break;
             }
         }
         Cursor cursor = dbQuery.exec();
         List<HashMap<String, String>> listItems = new ArrayList<>();
-            SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         while (cursor.moveToNext()) {
             HashMap<String, String> map = new HashMap<>();
-            String insertTime = cursor.getString(cursor.getColumnIndex(ColumnName.COLUMN_INSERT_TIME));
             String money = cursor.getString(cursor.getColumnIndex(ColumnName.COLUMN_MONEY));
-            String time = simpleDateFormat.format(new Date(Long.valueOf(insertTime)));
-            map.put("time", time);
+            String year = cursor.getString(cursor.getColumnIndex(ColumnName.COLUMN_YEAR));
+            String month = cursor.getString(cursor.getColumnIndex(ColumnName.COLUMN_MONTH));
+            String day = cursor.getString(cursor.getColumnIndex(ColumnName.COLUMN_DAY));
+            map.put("time", year + "年" + month + "月" + day + "日");
             map.put("money", money);
+            map.put("sort_time", year + (month.length() > 1 ? "0" + month : month) + (day.length() > 1 ? "0" + day : day));
             listItems.add(map);
-            Log.i(TAG, "kai ---- searchConsume() insertTime ----> " + insertTime);
             Log.i(TAG, "kai ---- searchConsume() money ----> " + money);
         }
         if (isAttach()) {
+            Collections.sort(listItems, new Comparator<HashMap<String, String>>() {
+                @Override
+                public int compare(HashMap<String, String> lhs, HashMap<String, String> rhs) {
+                    String sort1;
+                    String sort2;
+                    switch (sortType) {
+                        case PR_MONEY:
+                            sort1 = lhs.get("money");
+                            sort2 = rhs.get("money");
+                            break;
+                        default:
+                            sort2 = lhs.get("sort_time");
+                            sort1 = rhs.get("sort_time");
+                            break;
+                    }
+                    return NumberUtils.formatInt(Double.parseDouble(sort1) - Double.parseDouble(sort2));
+                }
+            });
+
                 getView().onFetchUpdateConsume(listItems);
         }
         

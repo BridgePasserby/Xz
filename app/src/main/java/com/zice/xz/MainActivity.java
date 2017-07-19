@@ -30,6 +30,7 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
     private Button btnSearch;
     private ListView lvConsume;
     private EditText etSearch;
+    private EditText etDesc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +52,7 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
         btnSearch = (Button) findViewById(R.id.btn_search);
         lvConsume = (ListView) findViewById(R.id.lv_consume);
         etSearch = (EditText) findViewById(R.id.et_search);
+        etDesc = (EditText) findViewById(R.id.et_desc);
     }
 
     private void setListener() {
@@ -82,13 +84,13 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
                     Toast.makeText(MainActivity.this, "金额不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                dbPresenter.insertConsume(categoryItem, typeItem, money);
+                dbPresenter.insertConsume(categoryItem, typeItem, money, String.valueOf(etDesc.getText()));
             }
         });
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbPresenter.searchConsume(DBPresenter.PR_TIME,etSearch.getText().toString());
+                dbPresenter.searchConsume(DBPresenter.PR_TIME, etSearch.getText().toString());
             }
         });
     }

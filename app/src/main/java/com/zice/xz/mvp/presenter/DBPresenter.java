@@ -83,7 +83,7 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
         }
     }
 
-    public void insertConsume( HashMap<String, String> categoryItem, HashMap<String, String> typeItem, String money) {
+    public void insertConsume( HashMap<String, String> categoryItem, HashMap<String, String> typeItem, String money,String desc) {
         Double aDouble = Double.valueOf(money);
         money = String.valueOf(NumberUtils.formatDouble(aDouble, 2, true));
         Calendar calendar = Calendar.getInstance();
@@ -100,7 +100,7 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
                 .where(ColumnName.COLUMN_DAY).is(String.valueOf(day))
                 .where(ColumnName.COLUMN_MONEY).is(money)
                 .where(ColumnName.COLUMN_INSERT_TIME).is(String.valueOf(calendar.getTime().getTime()))
-                .where(ColumnName.COLUMN_DESC).is("")
+                .where(ColumnName.COLUMN_DESC).is(desc == null ? "" : desc)
                 .exec();
         if (isAttach()) {
             if (success) {

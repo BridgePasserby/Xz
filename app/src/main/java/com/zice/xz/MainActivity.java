@@ -66,7 +66,6 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
         spType = (Spinner) findViewById(R.id.sp_type);
         etMoney = (EditText) findViewById(R.id.et_money);
         btnInsert = (Button) findViewById(R.id.ok_insert);
-//        btnInitDb = (Button) findViewById(R.id.init_db);
         btnSearch = (Button) findViewById(R.id.btn_search);
         lvConsume = (ListView) findViewById(R.id.lv_consume);
         etSearch = (EditText) findViewById(R.id.et_search);
@@ -76,12 +75,6 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
     }
 
     private void setListener() {
-//       btnInitDb.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                dbPresenter.queryConsumeCategory();
-//            }
-//        });
         spCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {

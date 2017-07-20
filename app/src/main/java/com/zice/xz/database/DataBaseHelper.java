@@ -135,6 +135,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         return db.query(distinct, table, columns, selection, selectionArgs, groupBy, having, orderBy, limit);
     }
 
+    /* chained query -start- */
     public DBQuery queryTable(String tableName) {
         return new DBQuery(tableName);
     }
@@ -200,8 +201,10 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             }
         }
     }
+    /* chained query -end- */
 
-    public DBInsert insertTable(String tableName){
+    /* chained insert -start- */
+    public DBInsert insertTable(String tableName) {
         return new DBInsert(tableName);
     }
     
@@ -255,6 +258,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             }
         }
     }
+    /* chained insert -end- */
     
 
 }

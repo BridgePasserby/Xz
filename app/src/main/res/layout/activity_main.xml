@@ -19,36 +19,67 @@
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="150dp"
-            app:layout_widthPercent="50%"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            app:layout_widthPercent="45%">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:text="@string/day_consume" />
-            
+                android:gravity="center_vertical"
+                android:text="@string/day_consume"
+                android:textSize="20sp" />
+
             <TextView
                 android:id="@+id/tv_day_consume"
                 android:layout_width="match_parent"
-                android:layout_height="100dp" />
+                android:layout_height="100dp"
+                android:gravity="center"
+                android:text="88.88"
+                android:textSize="35sp" />
         </LinearLayout>
 
         <LinearLayout
             android:layout_width="0dp"
             android:layout_height="150dp"
-            app:layout_marginLeftPercent="50%"
-            app:layout_widthPercent="50%"
-            android:orientation="vertical">
+            android:gravity="center"
+            android:orientation="horizontal"
+            app:layout_marginLeftPercent="45%"
+            app:layout_widthPercent="10%">
 
             <TextView
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:text="@string/month_consume" />
+                android:layout_width="1dp"
+                android:layout_height="100dp"
+                android:background="@color/color_black" />
+        </LinearLayout>
 
-            <TextView
-                android:id="@+id/tv_month_consume"
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            android:orientation="horizontal"
+            app:layout_marginLeftPercent="55%"
+            app:layout_widthPercent="45%">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="100dp" />
+                android:layout_height="150dp"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="50dp"
+                    android:gravity="center_vertical"
+                    android:text="@string/month_consume"
+                    android:textSize="20sp" />
+
+                <TextView
+                    android:id="@+id/tv_month_consume"
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp"
+                    android:gravity="center"
+                    android:text="888.88"
+                    android:textSize="35sp" />
+            </LinearLayout>
+
         </LinearLayout>
     </android.support.percent.PercentRelativeLayout>
 
@@ -56,13 +87,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <Button
-            android:id="@+id/init_db"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="SQL"
-            android:visibility="gone" />
 
         <Spinner
             android:id="@+id/sp_category"

@@ -5,7 +5,10 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.text.TextUtils;
 import android.util.Log;
+
+import com.zice.xz.exception.ParamsException;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -99,6 +102,33 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String selection = column + " = ?";
         String[] strings = new String[]{columnValue};
         return query(false, table, null, selection, strings, null, null, null, null);
+    }
+
+    /**
+     * 查询结果求和
+     * eg:select sum(numName) as result from table where day=4;
+     *
+     * @param numName 按该值求和
+     * @param table   表名       
+     * @param params 可选参数只能有偶数个或没有(column, columnValue)
+     * @return
+     */
+    public Cursor queryNum(String numName, String table, String... params) {
+        if (params == null || params.length <= 0) {
+            return null;
+        }
+        if (params.length % 2 != 0) {// 非偶数
+            throw new ParamsException("可选参数只能有偶数个或没有");
+        }
+        String sql = "select sum(%s) as result from %s where %s;";
+        String condition = null;
+        for (int i = 0; i < params.length; i = i + 2) {
+            condition = params[i] + "=" + params[i + 1] + " and ";
+        }
+        if (TextUtils.isEmpty(condition)) {
+            return null;
+        }
+        return db.rawQuery(String.format(sql, numName, table, condition.substring(0, condition.length() - 4)), null);
     }
 
     private Cursor query(boolean distinct, String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy, String limit) {

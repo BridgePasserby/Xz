@@ -1,6 +1,5 @@
 package com.zice.xz.mvp.contract;
 
-import com.zice.xz.mvp.presenter.BasePresenter;
 import com.zice.xz.mvp.view.BaseView;
 
 import java.util.HashMap;
@@ -13,15 +12,17 @@ import java.util.List;
  * description：
  */
 
-public interface IMainActivityView extends BaseView  {
+public interface IMainActivityView extends BaseView {
     /**
-     * 更新消费分类
+     * 查询消费分类成功
+     *
      * @param hashMapList 消费分类list
      */
     void onFetchConsumeCategory(List<HashMap<String, String>> hashMapList);
 
     /**
-     * 更新消费类型
+     * 查询消费类型成功
+     *
      * @param hashMapList 消费类型list
      */
     void onFetchConsumeType(List<HashMap<String, String>> hashMapList);
@@ -37,7 +38,7 @@ public interface IMainActivityView extends BaseView  {
     void onFetchInsertFailed();
 
     /**
-     * 更新消费表
+     * 查询消费表成功
      */
     void onFetchUpdateConsume(List<HashMap<String, String>> hashMapList);
 }

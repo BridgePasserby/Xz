@@ -10,8 +10,12 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.Calendar;
+
+import com.zice.xz.database.ColumnName;
 import com.zice.xz.mvp.contract.IMainActivityView;
 import com.zice.xz.mvp.presenter.DBPresenter;
 import com.zice.xz.utils.DBUtils;
@@ -31,6 +35,8 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
     private ListView lvConsume;
     private EditText etSearch;
     private EditText etDesc;
+    private TextView tvDayConsume;
+    private TextView tvMonthConsume;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,8 +45,20 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
         initView();
         setListener();
         dbPresenter = new DBPresenter(this);
-        dbPresenter.initConsumeCategory();
+        dbPresenter.queryConsumeCategory();
         Log.i(TAG, "onCreate() savedInstanceState -> " + savedInstanceState);
+        updateTopConsume();
+    }
+
+    private void updateTopConsume() {
+        Calendar calendar = Calendar.getInstance();
+        int year = calendar.get(java.util.Calendar.YEAR);
+        int month = calendar.get(java.util.Calendar.MONTH) + 1;
+        int day = calendar.get(java.util.Calendar.DAY_OF_MONTH);
+        String money = dbPresenter.queryMoneyByDate(ColumnName.COLUMN_DAY, year + "", month + "", day + "");
+        tvDayConsume.setText(money);
+        money = dbPresenter.queryMoneyByDate(ColumnName.COLUMN_MONTH, year + "", month + "", null);
+        tvMonthConsume.setText(money);
     }
 
     private void initView() {
@@ -53,20 +71,22 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
         lvConsume = (ListView) findViewById(R.id.lv_consume);
         etSearch = (EditText) findViewById(R.id.et_search);
         etDesc = (EditText) findViewById(R.id.et_desc);
+        tvDayConsume = (TextView) findViewById(R.id.tv_day_consume);
+        tvMonthConsume = (TextView) findViewById(R.id.tv_month_consume);
     }
 
     private void setListener() {
 //       btnInitDb.setOnClickListener(new View.OnClickListener() {
 //            @Override
 //            public void onClick(View v) {
-//                dbPresenter.initConsumeCategory();
+//                dbPresenter.queryConsumeCategory();
 //            }
 //        });
         spCategory.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 HashMap<String, String> selectedItem = (HashMap<String, String>) spCategory.getSelectedItem();
-                dbPresenter.initConsumeType( selectedItem);
+                dbPresenter.queryConsumeType( selectedItem);
             }
 
             @Override
@@ -90,7 +110,7 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbPresenter.searchConsume(DBPresenter.PR_TIME, etSearch.getText().toString());
+                dbPresenter.queryConsume(DBPresenter.PR_TIME, etSearch.getText().toString());
             }
         });
     }
@@ -117,6 +137,7 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
     @Override
     public void onFetchInsertSuccess() {
         Toast.makeText(this, "添加成功", Toast.LENGTH_SHORT).show();
+        updateTopConsume();
     }
 
     @Override

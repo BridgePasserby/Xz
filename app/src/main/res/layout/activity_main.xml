@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -10,6 +10,47 @@
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="com.zice.xz.MainActivity">
+
+    <android.support.percent.PercentRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="horizontal">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            app:layout_widthPercent="50%"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="@string/day_consume" />
+            
+            <TextView
+                android:id="@+id/tv_day_consume"
+                android:layout_width="match_parent"
+                android:layout_height="100dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="150dp"
+            app:layout_marginLeftPercent="50%"
+            app:layout_widthPercent="50%"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="@string/month_consume" />
+
+            <TextView
+                android:id="@+id/tv_month_consume"
+                android:layout_width="match_parent"
+                android:layout_height="100dp" />
+        </LinearLayout>
+    </android.support.percent.PercentRelativeLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -21,7 +62,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="SQL"
-            android:visibility="gone"/>
+            android:visibility="gone" />
 
         <Spinner
             android:id="@+id/sp_category"
@@ -37,30 +78,31 @@
             android:id="@+id/et_money"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:textColorHint="@color/color_hint"
             android:hint="@string/hint_money"
             android:inputType="number"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:textColorHint="@color/color_hint" />
+
         <EditText
             android:id="@+id/et_desc"
             android:layout_width="match_parent"
             android:layout_height="100dp"
+            android:background="@android:drawable/edit_text"
             android:gravity="top|left"
-            android:hint="@string/hint_desc"
-            android:background="@android:drawable/edit_text"/>
+            android:hint="@string/hint_desc" />
 
         <Button
             android:id="@+id/ok_insert"
             android:layout_width="match_parent"
             android:layout_height="50dp"
             android:text="@string/main_record" />
-        
+
         <EditText
-            android:visibility="gone"
             android:id="@+id/et_search"
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:maxLines="1" />
+            android:maxLines="1"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/btn_search"

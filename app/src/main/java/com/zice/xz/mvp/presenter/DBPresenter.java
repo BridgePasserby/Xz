@@ -8,6 +8,7 @@ import com.zice.xz.App;
 import com.zice.xz.database.DataBaseHelper;
 import com.zice.xz.database.DataBaseTable;
 import com.zice.xz.database.ColumnName;
+import com.zice.xz.exception.ParamsException;
 import com.zice.xz.mvp.contract.IMainActivityView;
 import com.zice.xz.utils.NumberUtils;
 
@@ -49,7 +50,7 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
         }
     }
 
-    public void initConsumeCategory() {
+    public void queryConsumeCategory() {
         Log.i(TAG, "onCreate() savedInstanceState -> ");
         List<HashMap<String, String>> listItems = new ArrayList<>();
         Cursor consumeCategory = dbh.queryTable(DataBaseTable.TABLE_CONSUME_CATEGORY).exec();
@@ -66,7 +67,7 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
         }
     }
 
-    public void initConsumeType( HashMap<String, String> selectedItem) {
+    public void queryConsumeType(HashMap<String, String> selectedItem) {
         String categoryId = selectedItem.get(ColumnName.COLUMN_CATEGORY_ID);
         Cursor query = dbh.query(DataBaseTable.TABLE_CONSUME_TYPE, ColumnName.COLUMN_CATEGORY_ID, categoryId);
         List<HashMap<String, String>> listItems = new ArrayList<>();
@@ -83,12 +84,12 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
         }
     }
 
-    public void insertConsume( HashMap<String, String> categoryItem, HashMap<String, String> typeItem, String money,String desc) {
+    public void insertConsume(HashMap<String, String> categoryItem, HashMap<String, String> typeItem, String money, String desc) {
         Double aDouble = Double.valueOf(money);
         money = String.valueOf(NumberUtils.formatDouble(aDouble, 2, true));
         Calendar calendar = Calendar.getInstance();
         int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH)+1;
+        int month = calendar.get(Calendar.MONTH) + 1;
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         String categoryId = categoryItem.get(ColumnName.COLUMN_CATEGORY_ID);
         String typeId = typeItem.get(ColumnName.COLUMN_TYPE_ID);
@@ -111,12 +112,11 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
         }
     }
 
-    public void searchConsume(final String sortType, String... condition) {
+    public void queryConsume(final String sortType, String... condition) {
         DataBaseHelper.DBQuery dbQuery = dbh.queryTable(DataBaseTable.TABLE_CONSUME_BILL);
         for (String s : condition) {
-            
-            if (TextUtils.isEmpty(s)){
-                continue;    
+            if (TextUtils.isEmpty(s)) {
+                continue;
             }
             String substring = s.substring(0, 3);
             switch (substring) {
@@ -129,9 +129,9 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
                 case PR_DAY:
                     dbQuery.where(ColumnName.COLUMN_DAY).is(s.substring(3));
                     break;
-                case PR_MONEY:
-                    dbQuery.where(ColumnName.COLUMN_MONEY).is(NumberUtils.formatDouble(s.substring(3),2,true));
-                    break;
+//                case PR_MONEY:
+//                    dbQuery.where(ColumnName.COLUMN_MONEY).is(NumberUtils.formatDouble(s.substring(3),2,true));
+//                    break;
                 case PR_TIME:
                     dbQuery.where(ColumnName.COLUMN_INSERT_TIME).is(s.substring(3));
                     break;
@@ -158,7 +158,7 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
             map.put("money", money);
             map.put("sort_time", year + (month.length() > 1 ? "0" + month : month) + (day.length() > 1 ? "0" + day : day));
             listItems.add(map);
-            Log.i(TAG, "kai ---- searchConsume() money ----> " + money);
+            Log.i(TAG, "kai ---- queryConsume() money ----> " + money);
         }
         if (isAttach()) {
             Collections.sort(listItems, new Comparator<HashMap<String, String>>() {
@@ -179,9 +179,48 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
                     return NumberUtils.formatInt(Double.parseDouble(sort1) - Double.parseDouble(sort2));
                 }
             });
-
-                getView().onFetchUpdateConsume(listItems);
+            getView().onFetchUpdateConsume(listItems);
         }
-        
+
+    }
+
+    public String queryMoneyByDate(String dateType, String year, String month, String day) throws ParamsException {
+        if (TextUtils.isEmpty(dateType)) {
+            return null;
+        }
+        Cursor cursor = null;
+        switch (dateType) {
+            case ColumnName.COLUMN_YEAR:
+                if (TextUtils.isEmpty(year)) {
+                    return null;
+                }
+                cursor = dbh.queryNum(ColumnName.COLUMN_MONEY, DataBaseTable.TABLE_CONSUME_BILL,
+                        ColumnName.COLUMN_YEAR, year);
+                break;
+            case ColumnName.COLUMN_MONTH:
+                if (TextUtils.isEmpty(year) || TextUtils.isEmpty(month)) {
+                    return null;
+                }
+                cursor = dbh.queryNum(ColumnName.COLUMN_MONEY, DataBaseTable.TABLE_CONSUME_BILL,
+                        ColumnName.COLUMN_YEAR, year,
+                        ColumnName.COLUMN_MONTH, month);
+                break;
+            case ColumnName.COLUMN_DAY:
+                if (TextUtils.isEmpty(year) || TextUtils.isEmpty(month) || TextUtils.isEmpty(day)) {
+                    return null;
+                }
+                cursor = dbh.queryNum(ColumnName.COLUMN_MONEY, DataBaseTable.TABLE_CONSUME_BILL,
+                        ColumnName.COLUMN_YEAR, year,
+                        ColumnName.COLUMN_MONTH, month,
+                        ColumnName.COLUMN_DAY, day);
+                break;
+            default:
+                cursor = null;
+        }
+        String money = "0";
+        if (cursor != null && cursor.moveToNext()) {
+            money = cursor.getString(cursor.getColumnIndex("result"));
+        }
+        return money == null ? "0" : money;
     }
 }

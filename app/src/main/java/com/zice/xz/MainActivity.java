@@ -3,11 +3,13 @@ package com.zice.xz;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.ScrollView;
 import android.widget.SimpleAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -30,13 +32,13 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
     private EditText etMoney;
     private Button btnInsert;
     private DBPresenter dbPresenter;
-//    private Button btnInitDb;
     private Button btnSearch;
     private ListView lvConsume;
     private EditText etSearch;
     private EditText etDesc;
     private TextView tvDayConsume;
     private TextView tvMonthConsume;
+    private ScrollView scrollView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,6 +74,7 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
         etDesc = (EditText) findViewById(R.id.et_desc);
         tvDayConsume = (TextView) findViewById(R.id.tv_day_consume);
         tvMonthConsume = (TextView) findViewById(R.id.tv_month_consume);
+        scrollView = (ScrollView) findViewById(R.id.scv_root);
     }
 
     private void setListener() {
@@ -106,6 +109,47 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
                 dbPresenter.queryConsume(DBPresenter.PR_TIME, etSearch.getText().toString());
             }
         });
+        lvConsume.setOnTouchListener(new View.OnTouchListener() {
+            public int mLastY;
+            public int mLastX;
+
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                int x = (int) event.getX();
+                int y = (int) event.getY();
+                int moveX = x - mLastX;
+                int moveY = y - mLastY;
+                int scvHeight = scrollView.getHeight();
+                int scvChildHeight = scrollView.getChildAt(0).getHeight();
+                Log.i(TAG, "onTouch: extScrollView.getHeight()" + scvHeight);
+                int action = event.getAction();
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        scrollView.requestDisallowInterceptTouchEvent(true);
+                        break;
+                    case MotionEvent.ACTION_MOVE:
+                        if (moveY < 0) {// 往上滑
+                            if (scvChildHeight > scvHeight && scvChildHeight - scvHeight > scrollView.getScrollY()) {// 未滑动到底部
+                                scrollView.requestDisallowInterceptTouchEvent(false);
+                            }
+
+                        } else {// 往下滑
+                            if (lvConsume.getFirstVisiblePosition() == 0 && lvConsume.getChildAt(0).getTop() == 0) {
+                                scrollView.requestDisallowInterceptTouchEvent(false);
+                            }
+                        }
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        break;
+                    default:
+                        break;
+                }
+                mLastX = x;
+                mLastY = y;
+                return false;
+            }
+        });
+
     }
 
     @Override

@@ -134,8 +134,11 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
                             }
 
                         } else {// 往下滑
-                            if (lvConsume.getFirstVisiblePosition() == 0 && lvConsume.getChildAt(0).getTop() == 0) {
-                                scrollView.requestDisallowInterceptTouchEvent(false);
+                            if (lvConsume.getFirstVisiblePosition() == 0) {
+                                View lvConsumeChildAt = lvConsume.getChildAt(0);
+                                if (lvConsumeChildAt == null || lvConsumeChildAt.getTop() == 0) {
+                                    scrollView.requestDisallowInterceptTouchEvent(false);
+                                }
                             }
                         }
                         break;

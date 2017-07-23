@@ -15,13 +15,12 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.Calendar;
-
 import com.zice.xz.database.ColumnName;
 import com.zice.xz.mvp.contract.IMainActivityView;
 import com.zice.xz.mvp.presenter.DBPresenter;
 import com.zice.xz.utils.DBUtils;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -177,6 +176,7 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
     @Override
     public void onFetchInsertSuccess() {
         Toast.makeText(this, "添加成功", Toast.LENGTH_SHORT).show();
+        etMoney.setText("");
         updateTopConsume();
     }
 

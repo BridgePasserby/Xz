@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <DatePicker
+        android:id="@+id/date_picker_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:calendarViewShown="false"/>
+
+    <TimePicker
+        android:id="@+id/time_picker_dialog"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <android.support.percent.PercentRelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/btn_conform"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_widthPercent="50%" 
+            android:textColor="@color/blue"
+            android:text="@string/dialog_date_conform"/>
+
+        <Button
+            android:id="@+id/btn_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            app:layout_marginLeftPercent="50%"
+            app:layout_widthPercent="50%"
+            android:textColor="@color/blue"
+            android:text="@string/dialog_time_cancel"/>
+    </android.support.percent.PercentRelativeLayout>
+
+</LinearLayout>

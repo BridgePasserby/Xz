@@ -10,12 +10,13 @@ import com.zice.xz.database.DataBaseTable;
 import com.zice.xz.database.ColumnName;
 import com.zice.xz.exception.ParamsException;
 import com.zice.xz.mvp.contract.IMainActivityView;
+import com.zice.xz.utils.DataModeUtils;
 import com.zice.xz.utils.NumberUtils;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -84,23 +85,20 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
         }
     }
 
-    public void insertConsume(HashMap<String, String> categoryItem, HashMap<String, String> typeItem, String money, String desc) {
+    public void insertConsume(HashMap<String, String> categoryItem, HashMap<String, String> typeItem, String dateTime, String money, String desc) {
         Double aDouble = Double.valueOf(money);
         money = String.valueOf(NumberUtils.formatDouble(aDouble, 2, true));
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int month = calendar.get(Calendar.MONTH) + 1;
-        int day = calendar.get(Calendar.DAY_OF_MONTH);
+        DataModeUtils.DataTime dataTime = DataModeUtils.parseDateTime(dateTime);
         String categoryId = categoryItem.get(ColumnName.COLUMN_CATEGORY_ID);
         String typeId = typeItem.get(ColumnName.COLUMN_TYPE_ID);
         boolean success = dbh.insertTable(DataBaseTable.TABLE_CONSUME_BILL)
                 .where(ColumnName.COLUMN_CATEGORY_ID).is(categoryId)
                 .where(ColumnName.COLUMN_TYPE_ID).is(typeId)
-                .where(ColumnName.COLUMN_YEAR).is(String.valueOf(year))
-                .where(ColumnName.COLUMN_MONTH).is(String.valueOf(month))
-                .where(ColumnName.COLUMN_DAY).is(String.valueOf(day))
+                .where(ColumnName.COLUMN_YEAR).is(String.valueOf(dataTime.year))
+                .where(ColumnName.COLUMN_MONTH).is(String.valueOf(dataTime.month))
+                .where(ColumnName.COLUMN_DAY).is(String.valueOf(dataTime.day))
                 .where(ColumnName.COLUMN_MONEY).is(money)
-                .where(ColumnName.COLUMN_INSERT_TIME).is(String.valueOf(calendar.getTime().getTime()))
+                .where(ColumnName.COLUMN_INSERT_TIME).is(String.valueOf(new Date().getTime()))
                 .where(ColumnName.COLUMN_DESC).is(desc == null ? "" : desc)
                 .exec();
         if (isAttach()) {

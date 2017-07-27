@@ -8,4 +8,7 @@
     <string name="hint_desc">备注</string>
     <string name="day_consume">今日消费</string>
     <string name="month_consume">本月消费</string>
+    <string name="dialog_date_conform">确认</string>
+    <string name="dialog_time_cancel">取消</string>
+    <string name="date_word">日期</string>
 </resources>

@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.SimpleAdapter;
@@ -19,8 +20,10 @@ import com.zice.xz.database.ColumnName;
 import com.zice.xz.mvp.contract.IMainActivityView;
 import com.zice.xz.mvp.presenter.DBPresenter;
 import com.zice.xz.utils.DBUtils;
+import com.zice.xz.utils.DataModeUtils;
+import com.zice.xz.utils.DeviceUtils;
 
-import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -38,6 +41,8 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
     private TextView tvDayConsume;
     private TextView tvMonthConsume;
     private ScrollView scrollView;
+    private TextView tvDate;
+    private String selectTime;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,14 +57,20 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
     }
 
     private void updateTopConsume() {
-        Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(java.util.Calendar.YEAR);
-        int month = calendar.get(java.util.Calendar.MONTH) + 1;
-        int day = calendar.get(java.util.Calendar.DAY_OF_MONTH);
-        String money = dbPresenter.queryMoneyByDate(ColumnName.COLUMN_DAY, year + "", month + "", day + "");
+        DataModeUtils.DataTime dataTime = DataModeUtils.parseDateTime(null);
+        String money = dbPresenter.queryMoneyByDate(ColumnName.COLUMN_DAY, dataTime.year + "", dataTime.month + "", dataTime.day + "");
         tvDayConsume.setText(money);
-        money = dbPresenter.queryMoneyByDate(ColumnName.COLUMN_MONTH, year + "", month + "", null);
+        money = dbPresenter.queryMoneyByDate(ColumnName.COLUMN_MONTH, dataTime.year + "", dataTime.month + "", null);
         tvMonthConsume.setText(money);
+    }
+
+    @Override
+    public void onWindowFocusChanged(boolean hasFocus) {
+        super.onWindowFocusChanged(hasFocus);
+        LinearLayout.LayoutParams layoutParams =
+                new LinearLayout.LayoutParams(getResources().getDisplayMetrics().widthPixels,
+                        DeviceUtils.getContentHeight(this));
+        lvConsume.setLayoutParams(layoutParams);
     }
 
     private void initView() {
@@ -74,6 +85,9 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
         tvDayConsume = (TextView) findViewById(R.id.tv_day_consume);
         tvMonthConsume = (TextView) findViewById(R.id.tv_month_consume);
         scrollView = (ScrollView) findViewById(R.id.scv_root);
+        tvDate = (TextView) findViewById(R.id.btn_date);
+        selectTime = DataModeUtils.formatDateTime(new Date());
+        tvDate.setText(selectTime);
     }
 
     private void setListener() {
@@ -81,7 +95,7 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 HashMap<String, String> selectedItem = (HashMap<String, String>) spCategory.getSelectedItem();
-                dbPresenter.queryConsumeType( selectedItem);
+                dbPresenter.queryConsumeType(selectedItem);
             }
 
             @Override
@@ -99,7 +113,7 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
                     Toast.makeText(MainActivity.this, "金额不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                dbPresenter.insertConsume(categoryItem, typeItem, money, String.valueOf(etDesc.getText()));
+                dbPresenter.insertConsume(categoryItem, typeItem, selectTime, money, String.valueOf(etDesc.getText()));
             }
         });
         btnSearch.setOnClickListener(new View.OnClickListener() {
@@ -149,6 +163,23 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
                 mLastX = x;
                 mLastY = y;
                 return false;
+            }
+        });
+        tvDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDateDialog(MainActivity.this, selectTime, new DialogClickListener() {
+                    @Override
+                    public void conformListener(String dateTime) {
+                        tvDate.setText(dateTime);
+                        selectTime = dateTime;
+                    }
+
+                    @Override
+                    public void cancelListener() {
+
+                    }
+                });
             }
         });
 

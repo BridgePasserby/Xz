@@ -170,6 +170,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:text="@string/main_search" />
+            <Button
+                android:id="@+id/btn_activity2"
+                android:layout_width="match_parent"
+                android:layout_height="50dp"
+                android:text="ACTIVITY2" />
 
             <ListView
                 android:id="@+id/lv_consume"

@@ -1,5 +1,6 @@
 package com.zice.xz;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
@@ -43,6 +44,7 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
     private ScrollView scrollView;
     private TextView tvDate;
     private String selectTime;
+    private Button btnActivity2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,6 +90,9 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
         tvDate = (TextView) findViewById(R.id.btn_date);
         selectTime = DataModeUtils.formatDateTime(new Date());
         tvDate.setText(selectTime);
+
+        btnActivity2 = (Button) findViewById(R.id.btn_activity2);
+
     }
 
     private void setListener() {
@@ -182,6 +187,13 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
                 });
             }
         });
+        
+        btnActivity2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, HistogramActivity.class));
+            }
+        });
 
     }
 
@@ -222,6 +234,6 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
             Toast.makeText(this, "无消费记录", Toast.LENGTH_SHORT).show();
             return;
         }
-        lvConsume.setAdapter(new SimpleAdapter(this,hashMapList,R.layout.layout_consume,new String[]{"time","money"},new int[]{R.id.txt_time,R.id.txt_money}));
+        lvConsume.setAdapter(new SimpleAdapter(this, hashMapList, R.layout.layout_consume, new String[]{"time", "money"}, new int[]{R.id.txt_time, R.id.txt_money}));
     }
 }

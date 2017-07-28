@@ -44,9 +44,20 @@ public class ExtHistogramView extends View {
         // 坐标(0,0),x = 700,y = 300
         canvas.drawLine(DOT_LOCATION[0], DOT_LOCATION[1], X_AXIS[0], X_AXIS[1], mPaint);// 横坐标
         canvas.drawLine(Y_AXIS[0], Y_AXIS[1], DOT_LOCATION[0], DOT_LOCATION[1], mPaint);// 纵坐标
-        // 画刻度
-        
-        for (int i = 0; i < 5; i++) {
+        // 画Y轴刻度
+        float yScale = 5f;// 等分分数
+        int yHeight = DOT_LOCATION[1] - Y_AXIS[1] - 50;// 留出50的头
+        float every = yHeight / yScale;// 每一份的高度
+        // 画Y轴的值
+        int yMoney = (int) (Y_MAX_MONEY / yScale);
+        for (int i = 1; i <= yScale; i++) {
+            canvas.drawLine(DOT_LOCATION[0], DOT_LOCATION[1] - (every * i) - (int) mPaint.getStrokeWidth()
+                    , DOT_LOCATION[0] + 10, DOT_LOCATION[1] - (every * i) - (int) mPaint.getStrokeWidth(), mPaint);
+            float textSize = mPaint.getTextSize();
+            String money = yMoney * i + "";
+            canvas.drawText(money, DOT_LOCATION[0] - money.length() * textSize, DOT_LOCATION[1] - (every * i) - (int) mPaint.getStrokeWidth(), mPaint);
+        }
+        for (int i = 1; i < 5; i++) {
             drawRectangle(i, 100 * i, canvas);
         }
     }
@@ -63,8 +74,8 @@ public class ExtHistogramView extends View {
         } else {
             mPaint.setColor(Color.parseColor("#ff00ff"));
         }
-        int startX = DOT_LOCATION[0] + rectangleWidth * (index * 2);
-        int stopX = DOT_LOCATION[0] + rectangleWidth * (index * 2 + 1);
+        int startX = DOT_LOCATION[0] + rectangleWidth * (index * 2 - 2);
+        int stopX = DOT_LOCATION[0] + rectangleWidth * (index * 2 - 2 + 1);
         int startY = DOT_LOCATION[1] - (int) mPaint.getStrokeWidth();
         // stopY = y轴总高度 - 柱状图y轴高度
         int stopY = (int) ((DOT_LOCATION[1]) - ((DOT_LOCATION[1] - Y_AXIS[1]) * (money / Y_MAX_MONEY)));// 根据消费数据来决定

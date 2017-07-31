@@ -19,7 +19,7 @@ import android.widget.Toast;
 
 import com.zice.xz.database.ColumnName;
 import com.zice.xz.mvp.contract.IMainActivityView;
-import com.zice.xz.mvp.presenter.DBPresenter;
+import com.zice.xz.mvp.presenter.MainPresenter;
 import com.zice.xz.utils.DBUtils;
 import com.zice.xz.utils.DataModeUtils;
 import com.zice.xz.utils.DeviceUtils;
@@ -34,7 +34,7 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
     private Spinner spType;
     private EditText etMoney;
     private Button btnInsert;
-    private DBPresenter dbPresenter;
+    private MainPresenter mainPresenter;
     private Button btnSearch;
     private ListView lvConsume;
     private EditText etSearch;
@@ -52,17 +52,17 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
         setContentView(R.layout.activity_main);
         initView();
         setListener();
-        dbPresenter = new DBPresenter(this);
-        dbPresenter.queryConsumeCategory();
+        mainPresenter = new MainPresenter(this);
+        mainPresenter.queryConsumeCategory();
         Log.i(TAG, "onCreate() savedInstanceState -> " + savedInstanceState);
         updateTopConsume();
     }
 
     private void updateTopConsume() {
         DataModeUtils.DataTime dataTime = DataModeUtils.parseDateTime(null);
-        String money = dbPresenter.queryMoneyByDate(ColumnName.COLUMN_DAY, dataTime.year + "", dataTime.month + "", dataTime.day + "");
+        String money = mainPresenter.queryMoneyByDate(ColumnName.COLUMN_DAY, dataTime.year + "", dataTime.month + "", dataTime.day + "");
         tvDayConsume.setText(money);
-        money = dbPresenter.queryMoneyByDate(ColumnName.COLUMN_MONTH, dataTime.year + "", dataTime.month + "", null);
+        money = mainPresenter.queryMoneyByDate(ColumnName.COLUMN_MONTH, dataTime.year + "", dataTime.month + "", null);
         tvMonthConsume.setText(money);
     }
 
@@ -100,7 +100,7 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 HashMap<String, String> selectedItem = (HashMap<String, String>) spCategory.getSelectedItem();
-                dbPresenter.queryConsumeType(selectedItem);
+                mainPresenter.queryConsumeType(selectedItem);
             }
 
             @Override
@@ -118,13 +118,13 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
                     Toast.makeText(MainActivity.this, "金额不能为空", Toast.LENGTH_SHORT).show();
                     return;
                 }
-                dbPresenter.insertConsume(categoryItem, typeItem, selectTime, money, String.valueOf(etDesc.getText()));
+                mainPresenter.insertConsume(categoryItem, typeItem, selectTime, money, String.valueOf(etDesc.getText()));
             }
         });
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dbPresenter.queryConsume(DBPresenter.PR_TIME, etSearch.getText().toString());
+                mainPresenter.queryConsume(MainPresenter.PR_TIME, etSearch.getText().toString());
             }
         });
         lvConsume.setOnTouchListener(new View.OnTouchListener() {
@@ -201,8 +201,8 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
     protected void onDestroy() {
         super.onDestroy();
         DBUtils.syncDataBase();
-        if (dbPresenter != null) {
-            dbPresenter.detach();
+        if (mainPresenter != null) {
+            mainPresenter.detach();
         }
     }
 
@@ -229,7 +229,7 @@ public class MainActivity extends BaseActivity implements IMainActivityView {
     }
 
     @Override
-    public void onFetchUpdateConsume(List<HashMap<String, String>> hashMapList) {
+    public void onFetchConsumeMoney(List<HashMap<String, String>> hashMapList) {
         if (hashMapList == null || hashMapList.size() == 0) {
             Toast.makeText(this, "无消费记录", Toast.LENGTH_SHORT).show();
             return;

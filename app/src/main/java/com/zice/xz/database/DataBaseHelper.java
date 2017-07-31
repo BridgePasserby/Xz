@@ -121,6 +121,35 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             throw new ParamsException("可选参数只能有偶数个或没有");
         }
         String sql = "select sum(%s) as result from %s where %s;";
+        String condition = "";
+        for (int i = 0; i < params.length; i = i + 2) {
+            condition += params[i] + "=" + params[i + 1] + " and ";
+        }
+        if (TextUtils.isEmpty(condition)) {
+            return null;
+        }
+        String format = String.format(sql, numName, table, condition.substring(0, condition.length() - 4));
+        Log.i(TAG, "queryNum: format" + format);
+        return db.rawQuery(format, null);
+    }
+
+    /**
+     * @param params 可选参数只能有偶数个或没有(column, columnValue)
+     * @return
+     */
+    public Cursor queryConsumeData(String... params){
+        if (params.length == 0) {
+        String sql = "select CONSUME_CATEGORY.name as 分类,sum(CONSUME_BILL.money) as 金额 from CONSUME_BILL" +
+                " join CONSUME_CATEGORY on CONSUME_BILL.category_id = CONSUME_CATEGORY.category_id" +
+                " group by CONSUME_BILL.category_id;";
+            return db.rawQuery(sql, null);
+        }
+        if (params.length % 2 != 0) {// 非偶数
+            throw new ParamsException("可选参数只能有偶数个或没有");
+        }
+        String sql = "select CONSUME_CATEGORY.name as 分类,sum(CONSUME_BILL.money) as 金额 from CONSUME_BILL" +
+                " join CONSUME_CATEGORY on CONSUME_BILL.category_id = CONSUME_CATEGORY.category_id" +
+                " where %s group by CONSUME_BILL.category_id;";
         String condition = null;
         for (int i = 0; i < params.length; i = i + 2) {
             condition = params[i] + "=" + params[i + 1] + " and ";
@@ -128,7 +157,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         if (TextUtils.isEmpty(condition)) {
             return null;
         }
-        return db.rawQuery(String.format(sql, numName, table, condition.substring(0, condition.length() - 4)), null);
+        return db.rawQuery(String.format(sql, condition.substring(0, condition.length() - 4)), null);
     }
 
     private Cursor query(boolean distinct, String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy, String limit) {
@@ -171,6 +200,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
     public class QueryExec {
         private Map<String, String> paramMap;
         private String tableName;
+        private String groupBy;
 
         private StringBuilder selection = new StringBuilder();
         private String[] selectionArgs;
@@ -183,6 +213,11 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         void addParam(String key, String value) {
             paramMap.put(key, value);
             Log.i(TAG, "paramMap key------> " + key);
+        }
+
+        QueryExec groupBy(String column){
+            this.groupBy = column;
+            return this;
         }
 
         public Cursor exec() {

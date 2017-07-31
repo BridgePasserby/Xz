@@ -5,10 +5,9 @@ import android.text.TextUtils;
 import android.util.Log;
 
 import com.zice.xz.App;
+import com.zice.xz.database.ColumnName;
 import com.zice.xz.database.DataBaseHelper;
 import com.zice.xz.database.DataBaseTable;
-import com.zice.xz.database.ColumnName;
-import com.zice.xz.exception.ParamsException;
 import com.zice.xz.mvp.contract.IMainActivityView;
 import com.zice.xz.utils.DataModeUtils;
 import com.zice.xz.utils.NumberUtils;
@@ -27,7 +26,7 @@ import java.util.List;
  * description：
  */
 
-public class DBPresenter extends BasePresenter<IMainActivityView> {
+public class MainPresenter extends BasePresenter<IMainActivityView> {
 
     private DataBaseHelper dbh;
     public static final String PR_YEAR = "YER";
@@ -44,7 +43,7 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
      *
      * @param iMainActivityView 关联对象
      */
-    public DBPresenter(IMainActivityView iMainActivityView) {
+    public MainPresenter(IMainActivityView iMainActivityView) {
         super(iMainActivityView);
         if (dbh == null) {
             dbh = new DataBaseHelper(App.getAppContext(), DataBaseTable.DB_NAME, null, DataBaseTable.DATABASE_VERSION_INIT);
@@ -87,7 +86,8 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
 
     public void insertConsume(HashMap<String, String> categoryItem, HashMap<String, String> typeItem, String dateTime, String money, String desc) {
         Double aDouble = Double.valueOf(money);
-        money = String.valueOf(NumberUtils.formatDouble(aDouble, 2, true));
+        money = String.valueOf(NumberUtils.formatDouble3(aDouble, 2, true));
+        Log.i(TAG, "insertConsume:insert money " + money);
         DataModeUtils.DataTime dataTime = DataModeUtils.parseDateTime(dateTime);
         String categoryId = categoryItem.get(ColumnName.COLUMN_CATEGORY_ID);
         String typeId = typeItem.get(ColumnName.COLUMN_TYPE_ID);
@@ -122,7 +122,7 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
                     dbQuery.where(ColumnName.COLUMN_YEAR).is(s.substring(3));
                     break;
                 case PR_MONTH:
-                    dbQuery.where(ColumnName.COLUMN_MONEY).is(s.substring(3));
+                    dbQuery.where(ColumnName.COLUMN_MONTH).is(s.substring(3));
                     break;
                 case PR_DAY:
                     dbQuery.where(ColumnName.COLUMN_DAY).is(s.substring(3));
@@ -177,12 +177,23 @@ public class DBPresenter extends BasePresenter<IMainActivityView> {
                     return NumberUtils.formatInt(Double.parseDouble(sort1) - Double.parseDouble(sort2));
                 }
             });
-            getView().onFetchUpdateConsume(listItems);
+            getView().onFetchConsumeMoney(listItems);
         }
 
     }
 
-    public String queryMoneyByDate(String dateType, String year, String month, String day) throws ParamsException {
+    /**
+     * 查询指定日期的消费总和
+     *
+     * @param dateType ColumnName.COLUMN_YEAR year
+     *                 <p>ColumnName.COLUMN_MONTH year month</p> 
+     *                 <p>ColumnName.COLUMN_DAY year month day</p> where dateType = year/month/day
+     * @param year
+     * @param month
+     * @param day
+     * @return
+     */
+    public String queryMoneyByDate(String dateType, String year, String month, String day) {
         if (TextUtils.isEmpty(dateType)) {
             return null;
         }

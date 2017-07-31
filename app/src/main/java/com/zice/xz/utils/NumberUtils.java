@@ -69,14 +69,15 @@ public class NumberUtils {
         }
     }
     
-    public static String formatDouble3(double d) {
+    public static String formatDouble3(double num, int decimalDigits, boolean round) {
         NumberFormat nf = NumberFormat.getNumberInstance();
         // 保留两位小数
-        nf.setMaximumFractionDigits(2);
+        nf.setMaximumFractionDigits(decimalDigits);
         // 如果不需要四舍五入，可以使用RoundingMode.DOWN
-        nf.setRoundingMode(RoundingMode.UP);
-        return nf.format(d);
+        nf.setRoundingMode(round ? RoundingMode.UP : RoundingMode.DOWN);
+        return nf.format(num);
     }
+
     public static String formatDouble4(double d) {
         DecimalFormat df = new DecimalFormat("#.00");
         return df.format(d);

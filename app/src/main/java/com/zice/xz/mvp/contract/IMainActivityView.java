@@ -40,5 +40,5 @@ public interface IMainActivityView extends BaseView {
     /**
      * 查询消费表成功
      */
-    void onFetchUpdateConsume(List<HashMap<String, String>> hashMapList);
+    void onFetchConsumeMoney(List<HashMap<String, String>> hashMapList);
 }

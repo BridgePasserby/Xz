@@ -28,7 +28,7 @@ public class DefaultTableContent {
     public static final String CONSUME_TYPE_DINNER = CONSUME_CATEGORY_FOOD + "04";
     public static final String CONSUME_TYPE_SUPPER = CONSUME_CATEGORY_FOOD + "05";
     public static final String CONSUME_TYPE_SNACKS = CONSUME_CATEGORY_FOOD + "06";
-//    public static final String CONSUME_TYPE_OTHER_1 = CONSUME_CATEGORY_OTHER + "07";
+    public static final String CONSUME_TYPE_OTHER_1 = CONSUME_CATEGORY_FOOD + "99";
 
     public static final String CONSUME_TYPE_WATER = CONSUME_CATEGORY_HOUSE + "01";
     public static final String CONSUME_TYPE_ELECTRIC = CONSUME_CATEGORY_HOUSE + "02";
@@ -36,7 +36,7 @@ public class DefaultTableContent {
     public static final String CONSUME_TYPE_NETWORK = CONSUME_CATEGORY_HOUSE + "04";
     public static final String CONSUME_TYPE_HOUSE_FEE = CONSUME_CATEGORY_HOUSE + "05";
     public static final String CONSUME_TYPE_TENEMENT = CONSUME_CATEGORY_HOUSE + "06";
-//    public static final String CONSUME_TYPE_OTHER_2 = CONSUME_CATEGORY_OTHER + "001";
+    public static final String CONSUME_TYPE_OTHER_2 = CONSUME_CATEGORY_HOUSE + "99";
 
     public static final String CONSUME_TYPE_BUS = CONSUME_CATEGORY_TRAVEL + "01";
     public static final String CONSUME_TYPE_COACH = CONSUME_CATEGORY_TRAVEL + "02";
@@ -45,12 +45,13 @@ public class DefaultTableContent {
     public static final String CONSUME_TYPE_AIRPLANE = CONSUME_CATEGORY_TRAVEL + "05";
     public static final String CONSUME_TYPE_SHIP = CONSUME_CATEGORY_TRAVEL + "06";
     public static final String CONSUME_TYPE_OIL = CONSUME_CATEGORY_TRAVEL + "07";
-//    public static final String CONSUME_TYPE_OTHER_3 = CONSUME_CATEGORY_OTHER + "002";
+    public static final String CONSUME_TYPE_OTHER_3 = CONSUME_CATEGORY_TRAVEL + "99";
 
     public static final String CONSUME_TYPE_OPERATION_FEE = CONSUME_CATEGORY_MEDICINE + "01";
     public static final String CONSUME_TYPE_MEDICAL_FEE = CONSUME_CATEGORY_MEDICINE + "02";
     public static final String CONSUME_TYPE_INQUIRY_FEE = CONSUME_CATEGORY_MEDICINE + "03";
-//    public static final String CONSUME_TYPE_OTHER_4 = CONSUME_CATEGORY_OTHER + "003";
+    public static final String CONSUME_TYPE_REGISTRATION_FEE = CONSUME_CATEGORY_MEDICINE + "04";
+    public static final String CONSUME_TYPE_OTHER_4 = CONSUME_CATEGORY_MEDICINE + "99";
 
     public static final String CONSUME_TYPE_KTV = CONSUME_CATEGORY_ENTERTAINMENT + "01";
     public static final String CONSUME_TYPE_INTERNET_BAR = CONSUME_CATEGORY_ENTERTAINMENT + "02";
@@ -61,14 +62,14 @@ public class DefaultTableContent {
     public static final String CONSUME_TYPE_FITNESS = CONSUME_CATEGORY_ENTERTAINMENT + "07";
     public static final String CONSUME_TYPE_CONCERT = CONSUME_CATEGORY_ENTERTAINMENT + "08";
     public static final String CONSUME_TYPE_GAME = CONSUME_CATEGORY_ENTERTAINMENT + "09";
-//    public static final String CONSUME_TYPE_OTHER_5 = CONSUME_CATEGORY_OTHER + "004";
+    public static final String CONSUME_TYPE_OTHER_5 = CONSUME_CATEGORY_ENTERTAINMENT + "99";
 
     public static final String CONSUME_TYPE_COMPUTER = CONSUME_CATEGORY_ELECTRONIC_PRODUCT + "01";
     public static final String CONSUME_TYPE_PERIPHERAL = CONSUME_CATEGORY_ELECTRONIC_PRODUCT + "02";
     public static final String CONSUME_TYPE_ROUTER = CONSUME_CATEGORY_ELECTRONIC_PRODUCT + "03";
     public static final String CONSUME_TYPE_PHONE = CONSUME_CATEGORY_ELECTRONIC_PRODUCT + "04";
     public static final String CONSUME_TYPE_ACCESSORIES = CONSUME_CATEGORY_ELECTRONIC_PRODUCT + "05";
-//    public static final String CONSUME_TYPE_OTHER_6 = CONSUME_CATEGORY_OTHER + "005";
+    public static final String CONSUME_TYPE_OTHER_6 = CONSUME_CATEGORY_ELECTRONIC_PRODUCT + "99";
 
     public static final String CONSUME_TYPE_CLOTHES = CONSUME_CATEGORY_SHOPPING + "01";
     public static final String CONSUME_TYPE_SHOES = CONSUME_CATEGORY_SHOPPING + "02";
@@ -77,13 +78,14 @@ public class DefaultTableContent {
     public static final String CONSUME_TYPE_NURSE_PRODUCT = CONSUME_CATEGORY_SHOPPING + "05";
     public static final String CONSUME_TYPE_CLEAN_PRODUCT = CONSUME_CATEGORY_SHOPPING + "06";
     public static final String CONSUME_TYPE_COMMODITY = CONSUME_CATEGORY_SHOPPING + "07";
-//    public static final String CONSUME_TYPE_OTHER_7 = CONSUME_CATEGORY_OTHER + "006";
+    public static final String CONSUME_TYPE_SUPERMARKET = CONSUME_CATEGORY_SHOPPING + "08";
+    public static final String CONSUME_TYPE_OTHER_7 = CONSUME_CATEGORY_SHOPPING + "99";
 
     public static final String CONSUME_TYPE_PEN = CONSUME_CATEGORY_STUDY + "01";
     public static final String CONSUME_TYPE_PAPER = CONSUME_CATEGORY_STUDY + "02";
     public static final String CONSUME_TYPE_BOOK = CONSUME_CATEGORY_STUDY + "03";
-//    public static final String CONSUME_TYPE_OTHER_8 = CONSUME_CATEGORY_OTHER + "007";
-    
+    public static final String CONSUME_TYPE_OTHER_8 = CONSUME_CATEGORY_STUDY + "99";
+
     public static final String CONSUME_TYPE_OTHER = CONSUME_CATEGORY_OTHER + "99";
 
 
@@ -110,7 +112,7 @@ public class DefaultTableContent {
         consumeTypeMap.put(CONSUME_TYPE_DINNER, "晚饭");
         consumeTypeMap.put(CONSUME_TYPE_SUPPER, "夜宵");
         consumeTypeMap.put(CONSUME_TYPE_SNACKS, "零食");
-//        consumeTypeMap.put(CONSUME_TYPE_OTHER_1, "其他");
+        consumeTypeMap.put(CONSUME_TYPE_OTHER_1, "其他");
 
         consumeTypeMap.put(CONSUME_TYPE_WATER, "水");
         consumeTypeMap.put(CONSUME_TYPE_ELECTRIC, "电");
@@ -118,7 +120,7 @@ public class DefaultTableContent {
         consumeTypeMap.put(CONSUME_TYPE_NETWORK, "网");
         consumeTypeMap.put(CONSUME_TYPE_HOUSE_FEE, "房租");
         consumeTypeMap.put(CONSUME_TYPE_TENEMENT, "物业");
-//        consumeTypeMap.put(CONSUME_TYPE_OTHER_2, "其他");
+        consumeTypeMap.put(CONSUME_TYPE_OTHER_2, "其他");
 
         consumeTypeMap.put(CONSUME_TYPE_BUS, "公工交通");
         consumeTypeMap.put(CONSUME_TYPE_COACH, "长途客车");
@@ -127,12 +129,13 @@ public class DefaultTableContent {
         consumeTypeMap.put(CONSUME_TYPE_AIRPLANE, "飞机");
         consumeTypeMap.put(CONSUME_TYPE_SHIP, "船舶");
         consumeTypeMap.put(CONSUME_TYPE_OIL, "油");
-//        consumeTypeMap.put(CONSUME_TYPE_OTHER_3, "其他");
+        consumeTypeMap.put(CONSUME_TYPE_OTHER_3, "其他");
 
         consumeTypeMap.put(CONSUME_TYPE_OPERATION_FEE, "手术费");
         consumeTypeMap.put(CONSUME_TYPE_MEDICAL_FEE, "医药费");
         consumeTypeMap.put(CONSUME_TYPE_INQUIRY_FEE, "问诊费");
-//        consumeTypeMap.put(CONSUME_TYPE_OTHER_4, "其他");
+        consumeTypeMap.put(CONSUME_TYPE_REGISTRATION_FEE, "挂号费");
+        consumeTypeMap.put(CONSUME_TYPE_OTHER_4, "其他");
 
         consumeTypeMap.put(CONSUME_TYPE_KTV, "KTV");
         consumeTypeMap.put(CONSUME_TYPE_INTERNET_BAR, "网吧");
@@ -143,14 +146,14 @@ public class DefaultTableContent {
         consumeTypeMap.put(CONSUME_TYPE_FITNESS, "健身");
         consumeTypeMap.put(CONSUME_TYPE_CONCERT, "音乐会");
         consumeTypeMap.put(CONSUME_TYPE_GAME, "游戏");
-//        consumeTypeMap.put(CONSUME_TYPE_OTHER_5, "其他");
+        consumeTypeMap.put(CONSUME_TYPE_OTHER_5, "其他");
 
         consumeTypeMap.put(CONSUME_TYPE_COMPUTER, "电脑");
         consumeTypeMap.put(CONSUME_TYPE_PERIPHERAL, "外设");
         consumeTypeMap.put(CONSUME_TYPE_ROUTER, "路由器");
         consumeTypeMap.put(CONSUME_TYPE_PHONE, "手机");
         consumeTypeMap.put(CONSUME_TYPE_ACCESSORIES, "配件");
-//        consumeTypeMap.put(CONSUME_TYPE_OTHER_6, "其他");
+        consumeTypeMap.put(CONSUME_TYPE_OTHER_6, "其他");
 
         consumeTypeMap.put(CONSUME_TYPE_CLOTHES, "衣服");
         consumeTypeMap.put(CONSUME_TYPE_SHOES, "鞋子");
@@ -158,13 +161,14 @@ public class DefaultTableContent {
         consumeTypeMap.put(CONSUME_TYPE_JEWELRY, "首饰");
         consumeTypeMap.put(CONSUME_TYPE_NURSE_PRODUCT, "洗护");
         consumeTypeMap.put(CONSUME_TYPE_CLEAN_PRODUCT, "清洁");
-        consumeTypeMap.put(CONSUME_TYPE_COMMODITY, "家居日用");
-//        consumeTypeMap.put(CONSUME_TYPE_OTHER_7, "其他");
+        consumeTypeMap.put(CONSUME_TYPE_SUPERMARKET, "超市");
+        consumeTypeMap.put(CONSUME_TYPE_OTHER_7, "其他");
 
         consumeTypeMap.put(CONSUME_TYPE_PEN, "笔");
         consumeTypeMap.put(CONSUME_TYPE_PAPER, "本");
         consumeTypeMap.put(CONSUME_TYPE_BOOK, "书");
-        
+        consumeTypeMap.put(CONSUME_TYPE_OTHER_8, "其他");
+
         consumeTypeMap.put(CONSUME_TYPE_OTHER, "其他");
     }
 

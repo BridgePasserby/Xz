@@ -2,8 +2,8 @@ package com.zice.xz;
 
 import android.app.Dialog;
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -25,7 +25,7 @@ public class BaseActivity extends AppCompatActivity {
     public void showErrorDialog(String code) {
 
     }
-
+    
     public void showDateDialog(Context context, String selectTime, final DialogClickListener dialogClickListener) {
         final Dialog dialog = new Dialog(context);
         dialog.setContentView(R.layout.dialog_date);
@@ -38,7 +38,7 @@ public class BaseActivity extends AppCompatActivity {
         try {
             DataModeUtils.DataTime dataTime = DataModeUtils.parseDateTime(selectTime);
             if (dataTime != null) {
-                datePicker.updateDate(dataTime.year, dataTime.month, dataTime.day);
+                datePicker.updateDate(dataTime.year, dataTime.month - 1, dataTime.day);
             }
             SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy");
             date = simpleDateFormat.parse(String.valueOf(year - 2));

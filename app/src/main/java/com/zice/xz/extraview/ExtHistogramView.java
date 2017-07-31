@@ -5,7 +5,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
+
+import com.zice.xz.mvp.mode.DataMode;
+
+import java.util.List;
 
 /**
  * Copyright (c) 2017,xxxxxx All rights reserved.
@@ -18,10 +23,14 @@ public class ExtHistogramView extends View {
     private static final String TAG = "HistogramView";
     private Paint mPaint;
     private final int[] DOT_LOCATION = {50, 400};// 圆点
-    private final int[] X_AXIS = {750, 400};// x轴顶点坐标
+    private final int[] X_AXIS = {600, 400};// x轴顶点坐标
     private final int[] Y_AXIS = {50, 100};// y轴顶点坐标
-    private final float Y_MAX_MONEY = 700f;// y轴表示的消费的最大值
-    private int rectangleWidth = 20;
+    private float yMaxMoney = 700f;// y轴表示的消费的最大值
+    private int xEveryWidth = 20;
+    private int yHeight;
+    private int xWidth;
+    private Canvas canvas;
+    private List<DataMode.ConsumeData> datas;
 
     public ExtHistogramView(Context context) {
         this(context, null);
@@ -34,52 +43,102 @@ public class ExtHistogramView extends View {
     public ExtHistogramView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
         mPaint = new Paint();
+        yHeight = DOT_LOCATION[1] - Y_AXIS[1];
+        xWidth = X_AXIS[0] - DOT_LOCATION[0];
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
+        this.canvas = canvas;
+        if (datas == null) {
+            return;
+        }
         mPaint.setColor(Color.BLACK);
+        mPaint.setTextSize(20f);
         mPaint.setStrokeWidth(1f);
-        // 坐标(0,0),x = 700,y = 300
+        mPaint.setAntiAlias(true);
+        // 坐标(50,400),x = 700,y = 300
         canvas.drawLine(DOT_LOCATION[0], DOT_LOCATION[1], X_AXIS[0], X_AXIS[1], mPaint);// 横坐标
         canvas.drawLine(Y_AXIS[0], Y_AXIS[1], DOT_LOCATION[0], DOT_LOCATION[1], mPaint);// 纵坐标
+        /** 画 Y 轴 --start-- */
         // 画Y轴刻度
-        float yScale = 5f;// 等分分数
-        int yHeight = DOT_LOCATION[1] - Y_AXIS[1] - 50;// 留出50的头
-        float every = yHeight / yScale;// 每一份的高度
+        float yScale = 5f;// y 轴等分分数
+        yHeight = (int) (yHeight - (yHeight / yScale / 2));
+        float yEveryHeight = yHeight / yScale;// 每一份的高度,留出每一份一半的头
         // 画Y轴的值
-        int yMoney = (int) (Y_MAX_MONEY / yScale);
-        for (int i = 1; i <= yScale; i++) {
-            canvas.drawLine(DOT_LOCATION[0], DOT_LOCATION[1] - (every * i) - (int) mPaint.getStrokeWidth()
-                    , DOT_LOCATION[0] + 10, DOT_LOCATION[1] - (every * i) - (int) mPaint.getStrokeWidth(), mPaint);
-            float textSize = mPaint.getTextSize();
+        int yMoney = (int) (yMaxMoney / yScale);
+        for (int i = 0; i <= yScale; i++) {
+            canvas.drawLine(DOT_LOCATION[0], DOT_LOCATION[1] - (yEveryHeight * i) - (int) mPaint.getStrokeWidth()
+                    , DOT_LOCATION[0] + 10, DOT_LOCATION[1] - (yEveryHeight * i) - (int) mPaint.getStrokeWidth(), mPaint);
             String money = yMoney * i + "";
-            canvas.drawText(money, DOT_LOCATION[0] - money.length() * textSize, DOT_LOCATION[1] - (every * i) - (int) mPaint.getStrokeWidth(), mPaint);
+            float measureText = mPaint.measureText(money);
+            canvas.drawText(money, DOT_LOCATION[0] - measureText, DOT_LOCATION[1] - (yEveryHeight * i) - (int) mPaint.getStrokeWidth(), mPaint);
         }
-        for (int i = 1; i < 5; i++) {
-            drawRectangle(i, 100 * i, canvas);
+        /** 画 Y 轴 --end-- */
+        int xScale = datas.size() + datas.size() - 1;// x 轴等分分数
+        xEveryWidth = (xWidth - (xWidth / xScale / 2)) / xScale;
+        if (datas != null) {
+            for (int i = 0; i < datas.size(); i++) {
+                drawRectangle(i + 1, datas.get(i).getMoney(), datas.get(i).getName(), canvas);
+                Log.i(TAG, "refreshDate: 柱状图" + datas.get(i).getMoney() + datas.get(i).getName());
+            }
         }
     }
 
     /**
      * 画柱状图矩形
      *
-     * @param index  矩形索引，从 0 开始
+     * @param index  矩形索引
+     * @param money  消费金额
+     * @param name   消费名称
      * @param canvas 画布
      */
-    private void drawRectangle(int index, int money, Canvas canvas) {
+    private void drawRectangle(int index, int money, String name, Canvas canvas) {
         if (index % 2 == 0) {
             mPaint.setColor(Color.parseColor("#00ffff"));
         } else {
             mPaint.setColor(Color.parseColor("#ff00ff"));
         }
-        int startX = DOT_LOCATION[0] + rectangleWidth * (index * 2 - 2);
-        int stopX = DOT_LOCATION[0] + rectangleWidth * (index * 2 - 2 + 1);
-        int startY = DOT_LOCATION[1] - (int) mPaint.getStrokeWidth();
+        int startX = DOT_LOCATION[0] + xEveryWidth * (index * 2 - 2) + (int) mPaint.getStrokeWidth();
+        int stopX = DOT_LOCATION[0] + xEveryWidth * (index * 2 - 2 + 1) + (int) mPaint.getStrokeWidth();
+        int startY = DOT_LOCATION[1]/* - (int) mPaint.getStrokeWidth()*/;
         // stopY = y轴总高度 - 柱状图y轴高度
-        int stopY = (int) ((DOT_LOCATION[1]) - ((DOT_LOCATION[1] - Y_AXIS[1]) * (money / Y_MAX_MONEY)));// 根据消费数据来决定
+        int stopY = (int) ((DOT_LOCATION[1]) - (yHeight * (money / yMaxMoney)));// 根据消费数据来决定
+        Log.i(TAG, "drawRectangle: " + startX + "," + stopY + "," + stopX + "," + startY);
         canvas.drawRect(startX, stopY, stopX, startY, mPaint);
+        float devider = (xEveryWidth - mPaint.measureText(name.substring(0, 1))) / 2;// 文字居中
+        drawText(name, startX + devider, startY + 10, 90, canvas);
     }
 
+    private void drawText(String text, float x, float y, float angle, Canvas canvas) {
+        if (angle != 0) {
+            canvas.rotate(angle, x, y);
+        }
+        mPaint.setColor(Color.BLACK);
+        mPaint.setTextAlign(Paint.Align.LEFT);
+        canvas.drawText(text, x, y, mPaint);
+        Log.i(TAG, "drawText: text" + text);
+        if (angle != 0) {
+            canvas.rotate(-angle, x, y);
+        }
+    }
+
+    public void refreshDate(List<DataMode.ConsumeData> datas) {
+        this.datas = datas;
+        setMaxMoney(datas);
+        invalidate();
+    }
+
+    private void setMaxMoney(List<DataMode.ConsumeData> datas) {
+        int result = 0;
+        for (DataMode.ConsumeData consumeData : datas) {
+            int money = consumeData.getMoney();
+            Log.i(TAG, "setMaxMoney: money" + money);
+            if (money > result) {
+                result = money;
+            }
+        }
+        yMaxMoney = result;
+    }
 }

@@ -28,6 +28,7 @@ public class HistogramActivity extends BaseActivity implements IHistogramActivit
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_histogram);
+        testPost = new TestNet();
         presenter = new HistogramPresenter(this);
         initView();
         setListener();
@@ -66,6 +67,5 @@ public class HistogramActivity extends BaseActivity implements IHistogramActivit
     @Override
     public void onFetchConsumeData(List<DataMode.ConsumeData> datas) {
         extHvConsume.refreshDate(datas);
-        testPost = new TestNet();
     }
 }

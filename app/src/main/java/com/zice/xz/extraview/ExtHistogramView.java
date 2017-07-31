@@ -1,6 +1,7 @@
 package com.zice.xz.extraview;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -8,7 +9,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import com.zice.xz.R;
 import com.zice.xz.mvp.mode.DataMode;
+import com.zice.xz.utils.DeviceUtils;
 
 import java.util.List;
 
@@ -27,6 +30,7 @@ public class ExtHistogramView extends View {
     private final int[] Y_AXIS = {50, 100};// y轴顶点坐标
     private float yMaxMoney = 700f;// y轴表示的消费的最大值
     private int xEveryWidth = 20;
+    private float yEveryHeight;
     private int yHeight;
     private int xWidth;
     private Canvas canvas;
@@ -45,12 +49,36 @@ public class ExtHistogramView extends View {
         mPaint = new Paint();
         yHeight = DOT_LOCATION[1] - Y_AXIS[1];
         xWidth = X_AXIS[0] - DOT_LOCATION[0];
+
+        TypedArray typedArray = context.getTheme().obtainStyledAttributes(attrs, R.styleable.ExtHistogramView, defStyleAttr, 0);
+        int indexCount = typedArray.getIndexCount();
+        for (int i = 0; i < indexCount; i++) {
+            int index = typedArray.getIndex(i);
+            switch (index) {
+                case R.styleable.ExtHistogramView_dotPosition:
+                    String string = typedArray.getString(i);
+                    if (string != null) {
+                        String[] split = string.split(",");
+                        try {
+                            DOT_LOCATION[0] = DeviceUtils.dp2px(context, Integer.parseInt(split[0]));
+                            DOT_LOCATION[1] = DeviceUtils.dp2px(context, Integer.parseInt(split[1]));// 圆点坐标
+                            X_AXIS[1] = DOT_LOCATION[1];// x轴右顶点坐标的y值
+                            Y_AXIS[0] = DOT_LOCATION[0];// y轴上顶点坐标的x值
+                        } catch (NumberFormatException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    break;
+            }
+        }
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
         this.canvas = canvas;
+        canvas.drawLine(DOT_LOCATION[0], DOT_LOCATION[1], X_AXIS[0], X_AXIS[1], mPaint);// 横坐标
+        canvas.drawLine(Y_AXIS[0], Y_AXIS[1], DOT_LOCATION[0], DOT_LOCATION[1], mPaint);// 纵坐标
         if (datas == null) {
             return;
         }
@@ -64,8 +92,9 @@ public class ExtHistogramView extends View {
         /** 画 Y 轴 --start-- */
         // 画Y轴刻度
         float yScale = 5f;// y 轴等分分数
-        yHeight = (int) (yHeight - (yHeight / yScale / 2));
-        float yEveryHeight = yHeight / yScale;// 每一份的高度,留出每一份一半的头
+        yHeight = (int) (yHeight - (yHeight / yScale / 2));// 留出每一份一半的头
+        // 每一份的高度
+        yEveryHeight = yHeight / yScale;
         // 画Y轴的值
         int yMoney = (int) (yMaxMoney / yScale);
         for (int i = 0; i <= yScale; i++) {

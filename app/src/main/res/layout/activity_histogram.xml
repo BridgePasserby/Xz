@@ -19,9 +19,8 @@
     <com.zice.xz.extraview.ExtHistogramView
         android:background="@color/blue"
         android:id="@+id/ext_hv_consume"
-        android:layout_marginLeft="100dp"
-        app:dotPosition="100,100"
+        app:dotPosition="50,350"
         android:layout_width="match_parent"
-        android:layout_height="391dp" />
+        android:layout_height="400dp" />
 
 </LinearLayout>

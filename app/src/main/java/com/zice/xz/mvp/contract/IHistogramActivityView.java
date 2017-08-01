@@ -10,5 +10,5 @@ import java.util.List;
  */
 
 public interface IHistogramActivityView extends BaseView {
-    public void onFetchConsumeData(List<DataMode.ConsumeData> datas);
+    public void onFetchConsumeData(String date, List<DataMode.ConsumeData> datas);
 }

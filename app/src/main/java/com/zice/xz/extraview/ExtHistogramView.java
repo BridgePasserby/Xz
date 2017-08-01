@@ -4,7 +4,10 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
 import android.graphics.Paint;
+import android.graphics.Path;
+import android.graphics.PathEffect;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
@@ -39,6 +42,7 @@ public class ExtHistogramView extends View {
     private int mHeight;// 控件高度
     private int yScale;// y 轴等分分数
     private int xScale;// y 轴等分分数
+    private String title;
 
 
     public ExtHistogramView(Context context) {
@@ -60,7 +64,7 @@ public class ExtHistogramView extends View {
             switch (index) {
                 case R.styleable.ExtHistogramView_dotPosition:
                     String string = typedArray.getString(i);
-                    if (string != null) {
+                    if (string != null && string.split(",").length == 2) {
                         String[] split = string.split(",");
                         try {
                             DOT_LOCATION[0] = DeviceUtils.dp2px(context, Integer.parseInt(split[0])) + getPaddingLeft();
@@ -118,12 +122,29 @@ public class ExtHistogramView extends View {
         /** 画 Y 轴 --start-- */
         // 画Y轴的值
         int yMoney = (int) (yMaxMoney / yScale);
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setColor(Color.DKGRAY);
+        Path path = new Path();
+        PathEffect effects = new DashPathEffect(new float[]{5, 5, 5}, 1);
+        paint.setPathEffect(effects);
         for (int i = 0; i <= yScale; i++) {
+            path.moveTo(DOT_LOCATION[0], DOT_LOCATION[1] - (yEveryHeight * i) - (int) mPaint.getStrokeWidth());
+            path.lineTo(X_AXIS[0], DOT_LOCATION[1] - (yEveryHeight * i) - (int) mPaint.getStrokeWidth());
+            canvas.drawPath(path, paint);
             canvas.drawLine(DOT_LOCATION[0], DOT_LOCATION[1] - (yEveryHeight * i) - (int) mPaint.getStrokeWidth()
                     , DOT_LOCATION[0] + 10, DOT_LOCATION[1] - (yEveryHeight * i) - (int) mPaint.getStrokeWidth(), mPaint);
             String money = yMoney * i + "";
             float measureText = mPaint.measureText(money);
             canvas.drawText(money, DOT_LOCATION[0] - measureText, DOT_LOCATION[1] - (yEveryHeight * i) - (int) mPaint.getStrokeWidth(), mPaint);
+            if (i == yScale) {// 画标题
+                mPaint.setTextSize(30f);
+                float textWidth = mPaint.measureText(title);
+                int textHeight = (int) (mPaint.descent() - mPaint.ascent());
+                canvas.drawText(title, DOT_LOCATION[0] + (X_AXIS[0] - DOT_LOCATION[0] - textWidth) / 2, Y_AXIS[1] + textHeight, mPaint);
+                mPaint.setTextSize(20f);
+            }
+
         }
         /** 画 Y 轴 --end-- */
 
@@ -172,8 +193,9 @@ public class ExtHistogramView extends View {
         }
     }
 
-    public void refreshDate(List<DataMode.ConsumeData> datas) {
+    public void refreshDate(String title, List<DataMode.ConsumeData> datas) {
         this.datas = datas;
+        this.title = title;
 
 //        int xScale = datas.size() + datas.size() - 1;// x 轴等分分数 // index从1开始
         int xScale = datas.size() + datas.size();// x 轴等分分数 // index从0开始
@@ -197,5 +219,8 @@ public class ExtHistogramView extends View {
             }
         }
         yMaxMoney = result;
+        if (yMaxMoney == 0) {
+            yMaxMoney = 700;
+        }
     }
 }

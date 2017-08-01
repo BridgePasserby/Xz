@@ -33,6 +33,7 @@ public class HistogramPresenter extends BasePresenter<IHistogramActivityView> {
     }
     
     public void queryConsumeDate(String dateType, String year, String month, String day){
+        String date = "";
         if (TextUtils.isEmpty(dateType)) {
             return ;
         }
@@ -43,12 +44,14 @@ public class HistogramPresenter extends BasePresenter<IHistogramActivityView> {
                     return ;
                 }
                 cursor = dbh.queryConsumeData(ColumnName.COLUMN_YEAR, year);
+                date = year + "年";
                 break;
             case ColumnName.COLUMN_MONTH:
                 if (TextUtils.isEmpty(year) || TextUtils.isEmpty(month)) {
                     return ;
                 }
                 cursor = dbh.queryConsumeData(ColumnName.COLUMN_YEAR, year,ColumnName.COLUMN_MONTH, month);
+                date = year + "年" + month + "月";
                 break;
             case ColumnName.COLUMN_DAY:
                 if (TextUtils.isEmpty(year) || TextUtils.isEmpty(month) || TextUtils.isEmpty(day)) {
@@ -57,13 +60,14 @@ public class HistogramPresenter extends BasePresenter<IHistogramActivityView> {
                 cursor = dbh.queryConsumeData(ColumnName.COLUMN_YEAR, year,
                         ColumnName.COLUMN_MONTH, month,
                         ColumnName.COLUMN_DAY, day);
+                date = year + "年" + month + "月" + day + "日";
                 break;
             default:
                 cursor = null;
         }
 
         if (cursor == null) {
-            getView().onFetchConsumeData(null);
+            getView().onFetchConsumeData(date, null);
             return;
         }
         List<DataMode.ConsumeData> consumeDatas = new ArrayList<>();
@@ -73,7 +77,7 @@ public class HistogramPresenter extends BasePresenter<IHistogramActivityView> {
             consumeDatas.add(new DataMode.ConsumeData(money, name));
             Log.i(TAG, "kai ---- queryConsume() money ----> " + money);
         }
-        getView().onFetchConsumeData(consumeDatas);
+        getView().onFetchConsumeData(date, consumeDatas);
     }
     
 }

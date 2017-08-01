@@ -65,7 +65,12 @@ public class HistogramActivity extends BaseActivity implements IHistogramActivit
     }
 
     @Override
-    public void onFetchConsumeData(List<DataMode.ConsumeData> datas) {
-        extHvConsume.refreshDate(datas);
+    public void onFetchConsumeData(String date, List<DataMode.ConsumeData> datas) {
+        int sumMoney = 0;
+        for (DataMode.ConsumeData consumeData : datas) {
+            sumMoney += consumeData.getMoney();
+        }
+        String title = date + "消费 " + sumMoney;
+        extHvConsume.refreshDate(title, datas);
     }
 }

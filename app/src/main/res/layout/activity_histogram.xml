@@ -19,6 +19,10 @@
     <com.zice.xz.extraview.ExtHistogramView
         android:background="@color/blue"
         android:id="@+id/ext_hv_consume"
+        android:paddingTop="10dp"
+        android:paddingLeft="50dp"
+        android:paddingRight="50dp"
+        android:paddingBottom="50dp"
         app:dotPosition="50,350"
         android:layout_width="match_parent"
         android:layout_height="400dp" />

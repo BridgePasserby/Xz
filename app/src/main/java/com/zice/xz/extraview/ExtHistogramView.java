@@ -63,8 +63,8 @@ public class ExtHistogramView extends View {
                     if (string != null) {
                         String[] split = string.split(",");
                         try {
-                            DOT_LOCATION[0] = DeviceUtils.dp2px(context, Integer.parseInt(split[0]));
-                            DOT_LOCATION[1] = DeviceUtils.dp2px(context, Integer.parseInt(split[1]));// 圆点坐标
+                            DOT_LOCATION[0] = DeviceUtils.dp2px(context, Integer.parseInt(split[0])) + getPaddingLeft();
+                            DOT_LOCATION[1] = DeviceUtils.dp2px(context, Integer.parseInt(split[1])) + getPaddingTop() - getPaddingBottom();// 圆点坐标
                         } catch (NumberFormatException e) {
                             e.printStackTrace();
                         }
@@ -80,10 +80,10 @@ public class ExtHistogramView extends View {
         mWidth = MeasureSpec.getSize(widthMeasureSpec);
         mHeight = MeasureSpec.getSize(heightMeasureSpec);
 
-        X_AXIS[0] = mWidth;
+        X_AXIS[0] = mWidth - getPaddingRight();
         X_AXIS[1] = DOT_LOCATION[1];// x轴右顶点坐标的y值
         Y_AXIS[0] = DOT_LOCATION[0];// y轴上顶点坐标的x值
-        Y_AXIS[1] = 0;
+        Y_AXIS[1] = 0 + getPaddingTop();
 
         yHeight = DOT_LOCATION[1] - Y_AXIS[1];
         xWidth = X_AXIS[0] - DOT_LOCATION[0];
@@ -114,7 +114,7 @@ public class ExtHistogramView extends View {
                 Log.i(TAG, "refreshDate: 柱状图" + datas.get(i).getMoney() + datas.get(i).getName());
             }
         }
-        
+
         /** 画 Y 轴 --start-- */
         // 画Y轴的值
         int yMoney = (int) (yMaxMoney / yScale);
@@ -182,7 +182,7 @@ public class ExtHistogramView extends View {
             xEveryWidth = xWidth / xScale;
             this.xScale = xScale;
         }
-        
+
         setMaxMoney(datas);
         invalidate();
     }

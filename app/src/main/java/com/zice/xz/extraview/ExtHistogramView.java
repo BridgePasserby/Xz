@@ -121,7 +121,7 @@ public class ExtHistogramView extends View {
 
         /** 画 Y 轴 --start-- */
         // 画Y轴的值
-        int yMoney = (int) (yMaxMoney / yScale);
+        int yMoney = (int) Math.ceil(yMaxMoney / yScale);
         Paint paint = new Paint();
         paint.setStyle(Paint.Style.STROKE);
         paint.setColor(Color.DKGRAY);

@@ -87,6 +87,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+        Log.d(TAG, "onUpgrade() called with: db = [" + db + "], oldVersion = [" + oldVersion + "], newVersion = [" + newVersion + "]");
 
     }
 
@@ -150,14 +151,16 @@ public class DataBaseHelper extends SQLiteOpenHelper {
         String sql = "select CONSUME_CATEGORY.name as 分类,sum(CONSUME_BILL.money) as 金额 from CONSUME_BILL" +
                 " join CONSUME_CATEGORY on CONSUME_BILL.category_id = CONSUME_CATEGORY.category_id" +
                 " where %s group by CONSUME_BILL.category_id;";
-        String condition = null;
+        String condition = "";
         for (int i = 0; i < params.length; i = i + 2) {
-            condition = params[i] + "=" + params[i + 1] + " and ";
+            condition += params[i] + "=" + params[i + 1] + " and ";
         }
         if (TextUtils.isEmpty(condition)) {
             return null;
         }
-        return db.rawQuery(String.format(sql, condition.substring(0, condition.length() - 4)), null);
+        String format = String.format(sql, condition.substring(0, condition.length() - 4));
+        Log.i(TAG,"format sql ------> " + format);
+        return db.rawQuery(format, null);
     }
 
     private Cursor query(boolean distinct, String table, String[] columns, String selection, String[] selectionArgs, String groupBy, String having, String orderBy, String limit) {

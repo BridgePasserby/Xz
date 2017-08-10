@@ -75,7 +75,7 @@ public class NumberUtils {
         nf.setMaximumFractionDigits(decimalDigits);
         // 如果不需要四舍五入，可以使用RoundingMode.DOWN
         nf.setRoundingMode(round ? RoundingMode.UP : RoundingMode.DOWN);
-        return nf.format(num);
+        return nf.format(num).replace(",", "");
     }
 
     public static String formatDouble4(double d) {

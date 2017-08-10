@@ -19,6 +19,7 @@ import com.zice.xz.mvp.presenter.HistogramPresenter;
 import com.zice.xz.network.Net;
 
 import java.io.IOException;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -52,9 +53,21 @@ public class HistogramActivity extends BaseActivity implements IHistogramActivit
         net = new Net();
         presenter = new HistogramPresenter(this);
         initView();
+        initDefault();
         setListener();
     }
-private static final String TAG = "HistogramActivity";
+
+    private void initDefault() {
+        Calendar instance = Calendar.getInstance();
+        int year = instance.get(Calendar.YEAR);
+        int month = instance.get(Calendar.MONTH)+1;
+        int day = instance.get(Calendar.DAY_OF_MONTH);
+        etYear.setText(year + "");
+        etMonth.setText(month + "");
+        etDay.setText(day + "");
+    }
+
+    private static final String TAG = "HistogramActivity";
     private void setListener() {
         btnQuery.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -167,14 +180,10 @@ private static final String TAG = "HistogramActivity";
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     etDay.setVisibility(View.VISIBLE);
-                    etMonth.setVisibility(View.VISIBLE);
-                    chbYear.setChecked(true);
-                    chbYear.setEnabled(false);
                     chbMonth.setChecked(true);
                     chbMonth.setEnabled(false);
                 }else {
                     etDay.setVisibility(View.GONE);
-                    chbYear.setEnabled(false);
                     chbMonth.setEnabled(true);
                 }
             }

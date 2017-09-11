@@ -11,15 +11,15 @@ public class DefaultTableContent {
     private HashMap<String, String> consumeCategoryMap;
     private HashMap<String, String> consumeTypeMap;
     /* 消费分类表 字段 */
-    public static final String CONSUME_CATEGORY_FOOD = "01";// 食物
-    public static final String CONSUME_CATEGORY_HOUSE = "02";// 住房
-    public static final String CONSUME_CATEGORY_TRAVEL = "03";// 出行
-    public static final String CONSUME_CATEGORY_MEDICINE = "04";// 医药
-    public static final String CONSUME_CATEGORY_ENTERTAINMENT = "05";// 娱乐
-    public static final String CONSUME_CATEGORY_ELECTRONIC_PRODUCT = "06";// 电子产品
-    public static final String CONSUME_CATEGORY_SHOPPING = "07";// 购物
-    public static final String CONSUME_CATEGORY_STUDY = "08";// 学习
-    public static final String CONSUME_CATEGORY_OTHER = "99";// 其他
+    public static final String CONSUME_CATEGORY_FOOD = "101";// 食物
+    public static final String CONSUME_CATEGORY_HOUSE = "102";// 住房
+    public static final String CONSUME_CATEGORY_TRAVEL = "103";// 出行
+    public static final String CONSUME_CATEGORY_MEDICINE = "104";// 医药
+    public static final String CONSUME_CATEGORY_ENTERTAINMENT = "105";// 娱乐
+    public static final String CONSUME_CATEGORY_ELECTRONIC_PRODUCT = "106";// 电子产品
+    public static final String CONSUME_CATEGORY_SHOPPING = "107";// 购物
+    public static final String CONSUME_CATEGORY_STUDY = "108";// 学习
+    public static final String CONSUME_CATEGORY_OTHER = "199";// 其他
 
     /* 消费类型表 字段 */
     public static final String CONSUME_TYPE_BREAKFAST = CONSUME_CATEGORY_FOOD + "01";

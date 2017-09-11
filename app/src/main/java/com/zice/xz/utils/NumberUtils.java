@@ -13,6 +13,16 @@ import java.text.NumberFormat;
  */
 
 public class NumberUtils {
+    
+    public static Long parseToLong(String num){
+        try {
+            return Long.valueOf(num);
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
+            return 0L;
+        }
+    }
+    
     /**
      * 保留两位小数，四舍五入的一个老土的方法
      * @param d
@@ -68,7 +78,14 @@ public class NumberUtils {
             return 0;
         }
     }
-    
+
+    /**
+     * 推荐使用
+     * @param num 操作数
+     * @param decimalDigits 小数位数
+     * @param round true:四舍五入
+     * @return 
+     */
     public static String formatDouble3(double num, int decimalDigits, boolean round) {
         NumberFormat nf = NumberFormat.getNumberInstance();
         // 保留两位小数

@@ -4,6 +4,9 @@ import android.app.Application;
 import android.content.Context;
 import android.util.Log;
 
+import com.zice.xz.greendao.DaoManager;
+
+
 /**
  * Author Kevin
  * Date 2016/10/26 20:50
@@ -22,6 +25,7 @@ public class App extends Application {
     public void onCreate() {
         super.onCreate();
         Log.i(TAG, "onCreate() TAG -> " + TAG);
+        DaoManager.getInstance();
     }
 
     public static Context getAppContext() {

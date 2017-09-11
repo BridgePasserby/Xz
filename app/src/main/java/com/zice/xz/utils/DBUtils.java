@@ -26,10 +26,10 @@ public class DBUtils {
     /**
      * 获取数据库的默认路径，data/data/报名/database/xxx.db
      *
-     * @param table 数据库名
+     * @param dbName 数据库名
      * @return
      */
-    public static String getDefaultDBPath(String table) {
+    public static String getDefaultDBPath(String dbName) {
         return App.getAppContext().getDatabasePath(DataBaseTable.DB_NAME).getPath();
     }
 

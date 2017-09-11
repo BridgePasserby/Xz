@@ -19,6 +19,9 @@ android {
     }
 }
 
+apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao' // apply plugin
+
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
@@ -27,4 +30,13 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.4.0'
     testCompile 'junit:junit:4.12'
     compile 'com.android.support:percent:22.2.0'
+    compile 'com.squareup.okhttp3:okhttp:3.8.1'
+    compile 'org.greenrobot:greendao:3.2.2' // add library
+}
+
+
+greendao {
+    schemaVersion 1
+    daoPackage 'com.zice.xz.greendao'
+    targetGenDir 'src/main/java'
 }
